@@ -1,0 +1,55 @@
+
+<div class="t-margin">
+
+<h4 class="t-header">Search Results ({{ data?.length }})<span *ngIf="data.length>0"> (Please click below record(s) to display related item plan(s))</span></h4> </div>
+<div class="table-mar">
+<p-table 
+    [columns]="feilds"
+    [value]="data"
+    [scrollable]="true"
+    scrollHeight="280px"
+    sortMode="multiple" 
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="data.length"
+    [rowsPerPageOptions]="[10, 25, 50, 75, 100]"
+    [first] = "first"
+    (onPage)= "pageChange($event)"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th
+          *ngFor="let col of feilds"
+          [pSortableColumn]="col.field"
+        >
+          {{ col.title }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-rowData
+      let-columns="columns"
+      let-rowIndex="rowIndex"
+    >
+      <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex" [ngClass]= "{'RowBgColor': rowData.ITEM_ID === selectedRow }" >
+        <td *ngFor="let col of columns" class={{col.cellClass}}>
+          <a href="#" *ngIf="col.field === 'ITEM_ID'" (click)="onRowSelect($event, rowData)">{{ rowData[col.field] }} 
+          </a>
+          <span *ngIf="col.field !== 'ITEM_ID'">{{ rowData[col.field] }}</span>  
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length" align="center">No records found</td>
+      </tr>
+    </ng-template>
+    <!-- <ng-template pTemplate="summary" >
+      <p  class="num-records">
+        Total {{ data?.length }} Record(s)
+      </p>
+    </ng-template> -->
+  </p-table>
+  </div>

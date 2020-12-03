@@ -1,0 +1,237 @@
+@import '../../../../assets/scss/variables';
+@import '../../../../assets/scss/mixins';
+
+
+.mfcr-detail-ctr {
+    // padding: 0;
+    margin: 15px 0;
+
+    .row-margin {
+        margin: 15px 0;
+
+        &.attr-ctr {
+         height: 38px;
+         display: flex;
+         align-items: center;
+        }
+    }
+    .details-ctr {
+        display: flex;
+        padding: 0;
+        
+        > *:first-child {
+            padding-left: 0;
+        }
+    }
+    .item-plan-label {
+        margin: 0px;
+        text-align: left;
+        font-size: 14px;
+        padding-left: 0px;
+    }
+    .plan-data-ctr {
+        border: 1px solid $pfep-border-color;
+        padding: 0 20px;
+        line-height: 38px;
+    }
+    .plan-data-value {
+        // padding: 0 18px;
+        // overflow-x: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        
+        &:not(.planIdLink) {
+           
+            color: #6D767D;
+            font-size: 13px;
+        }
+    }
+    .dataFont {
+        &:not(.planIdLink) {
+            font-weight: 700;
+          
+        }
+    }
+
+    .multi-value-ctr {
+        padding: 0 18px;
+        display: flex;
+    }
+
+    .multi_input {
+        flex: 1;
+        margin: 0 14px 0 0;
+        padding: 0px;
+    }
+    .form-head {
+        color: #076589;
+        margin: 16px 0px;
+        font-weight: 700;
+    }
+    .form-title {
+        color: #076589;
+       
+        font-weight: 600;
+    }
+    .head-padd {
+        padding: 0px;
+    }
+    .inp-mar {
+    }
+    .row-margin input,select {
+        height: 32px;
+    }
+    .planIdLink {
+        font-size: 14px;
+        line-height: 2.3;
+        text-decoration: underline !important;
+        color:blue !important;
+    }
+    .planIdLink:hover {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer !important;
+    }
+    .changes-heading {
+        > * {
+            font-size: 14px;
+            font-weight: 700;
+            
+            &:not(:first-child) {
+                padding-left: 15px;
+            }
+        }
+
+        margin: 0;
+    }
+    .changes-ctr {
+
+        & .plan-data-value {
+            padding-left: 15px;
+        }
+
+        .attr-ctr {
+            height: 38px;
+            align-items: center;
+        }
+    }
+    .erp-title {
+        //padding-left: 15px;
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 15px;
+    }
+    .request-change-table {
+        border: 1px solid $pfep-border-color;
+        padding: 15px;
+    }
+    .request-change-table, .apprvTbl {
+        table {
+            border: 1px solid $pfep-border-color;
+            width: 100%;
+        }
+        tr {
+            border-bottom: 1px solid $pfep-border-color;
+            height: 45px;
+            font-size: 14px;
+        }
+        td {
+            padding: 10px;
+            width: 34%;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        thead {
+            border-bottom: 1px solid $pfep-border-color;
+            background-color: #076589;
+            color: #fff;
+        }
+        th {
+            height: 45px;
+            padding: 10px;
+        }
+        .erpTable {
+            margin-top: 10%;
+        }
+        
+        .value-changed {
+            color: #d57e00;
+            font-weight: 700;
+        }
+        .empty-value {
+            font-size: 20px;
+        }
+        .rowValue {
+            margin: 0px;
+            text-align: center;
+        }
+
+    }
+    .apprvTbl {
+        th {
+            text-align: center;
+        }
+    }
+    .apprvSec {
+       display: flex;
+            .grpName {
+                color: #6D767D;
+
+                p {
+                    height: 30px;
+                    line-height: 30px;
+                }
+
+                i.pi-angle-double-right {
+                    font-size: 20px;
+                    padding: 0px 10px 0;
+                    height: 80%;
+                    vertical-align: middle;
+                }
+            }
+            .highlightInp {
+                color: #d57e00;
+                font-weight: 700;
+            }
+    }
+    .apprvTbl {
+       
+        .rowSelect {
+            background-color: #ffe2b7 !important;
+            outline: none;
+        }
+        .col-edit{
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 20px;
+            
+        } 
+        .col-edit-cell.ui-editing-cell .ui-inputtext {
+            width: calc(100% - 2.357em);
+            height: 33px;
+        }
+        .col-edit-cell{
+            position: relative;
+        }
+    }
+    .apprvBtns{
+        float: right;
+        margin: 20px 0;
+        button {
+            margin: 0 10px;
+        }
+    }
+    .apprvBtn {
+        background-color: $approveBtnColor !important;
+        border-color:  $approveBtnColor !important;
+        color:#fff;
+    }
+    .rejectBtn {
+        background-color: $cancelBtnColor !important;
+        border-color:  $cancelBtnColor !important;
+        color:#fff;
+    }
+}

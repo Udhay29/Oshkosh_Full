@@ -1,0 +1,6 @@
+@import '../../../../../assets/scss/variables';
+
+.demand-gap-no-data-message {
+    @extend .no-graph-msg;
+
+}

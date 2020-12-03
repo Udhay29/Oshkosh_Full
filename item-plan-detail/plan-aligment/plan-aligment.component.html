@@ -1,0 +1,35 @@
+<section class='warning-popup-content-ctr'>
+  <section class='warning-popup-msg-ctr'>
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>{{msg}}</span>
+  </section>
+  <section class='warning-popup-table-ctr'>
+      <h4 class="t-header">Item Plans</h4>
+      <p-table
+      [columns]="warningDetailsColumns"
+      [scrollable]="true"
+      [value]="tableData"
+      scrollHeight="300px"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of warningDetailsColumns">
+            {{ col.title }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-rowData
+        let-columns="warningDetailsColumns"
+        let-rowIndex="rowIndex"
+      >
+        <tr>
+          <td *ngFor="let col of warningDetailsColumns">
+            {{ rowData[col.APIMap] }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+</section>

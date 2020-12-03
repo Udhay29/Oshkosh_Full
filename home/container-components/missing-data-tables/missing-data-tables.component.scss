@@ -1,0 +1,148 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/mixins";
+
+.missing-data-table-container {
+  margin: $home-route-container-margin;
+
+  .missing-data-header {
+    @extend .section-header-styles;
+    padding-top: 0px;
+  }
+
+  > .missing-data-search-criteria {
+    & input,
+    & select {
+      width: 230px;
+    }
+
+    .weights-dimensions-part-number-wildCard, .package-detail-supplier-wildCard {
+      .look-up-group input {
+        height: calc(100% + 4px);
+        border-radius: 4px;
+        border: 2px solid #dee2e6;
+        padding: 4px 8px;
+    
+        &.invalidEntry {
+            border: 1px solid red;
+        }
+      }
+      width: 260px;
+  
+      .look-up-group {
+        height: 100%;
+      }
+  
+      span.look-up-search-icon {
+        height: calc(100% + 2px);
+        top: 1px;
+        border-radius: 0 4px 4px 0;
+        right: 1px;
+      }
+    }
+  }
+
+  .missing-data-table-interaction-container {
+    margin-top: 20px;
+  }
+
+  .ui-table .ui-table-thead > tr > th.erp-group {
+    background-color: $pfep-group-color-1 !important;
+  }
+
+  .ui-table .ui-table-thead > tr > th.pfep-group {
+    background-color: $pfep-group-color-2 !important;
+  }
+
+  .loading-text-section {
+    width: 100%;
+    background-color: #dee2e632;
+    border: 2px solid $pfep-border-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    img {
+      width: 50px;
+      margin: 10px;
+      height: 50px;
+    }
+  }
+
+  .missing-data-save-btn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    
+
+    button {
+      @include button(100px, 36px, 6px 6px);
+
+      &[disabled] {
+        @include disabled-button(100px, 36px, 6px 6px);
+      }
+    }
+  }
+
+  .hide-paginator {
+    display: none;
+  }
+
+  .missing-data-table-paginator {
+    .ui-dropdown-label.ui-inputtext {
+      margin: 0;
+      padding-top: 6px;
+      padding-bottom: 5px;
+    }
+
+    .total-records-para {
+      background-color: #f4f4f4;
+      color: #333;
+      border: 1px solid #c8c8c8;
+      padding: .571em 1em;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+  }
+
+  .missing-table-saving-overlay {
+    .missing-data-saving-icon img {
+      width: 20px;
+      margin: 10px;
+      height: 20px;
+    }
+
+    .ui-dialog-titlebar.ui-widget-header {
+      display: none;
+    }
+  }
+
+  .missing-data-export-excel {
+    margin: 10px;
+    > img {
+      cursor: pointer;
+      height: 35px;
+      width: 35px;
+    }
+  }
+}
+
+.save-confirmation-overlay {
+  button.save-btn {
+    @include button(100px, 36px, 6px 6px);
+    
+    display: inline-flex;
+  }
+
+  button.discard-btn {
+    @include button(100px, 36px, 6px 6px, black);
+    background-color: #f4f4f4;
+    border: none;
+    display: inline-flex;
+
+    &:hover {
+      background-color: #c8c8c8;
+    }
+  }
+}

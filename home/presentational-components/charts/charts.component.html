@@ -1,0 +1,25 @@
+<p class="heading">
+  
+{{data?.label}}
+
+</p>
+<div [ngClass]="['card', data?.label]" (click)="onSelect(data?.label)">
+<ngx-charts-bar-vertical-stacked *ngIf="data.length > 0"
+  [scheme]="colorScheme"
+  [customColors]="customColors"
+  [results]="data"
+  [gradient]="gradient"
+  [xAxis]="showXAxis"
+  [yAxis]="showYAxis"
+  [legend]="showLegend"
+  [showGridLines]="showGridLines"
+  [showXAxisLabel]="showXAxisLabel"
+  [showYAxisLabel]="showYAxisLabel"
+  [xAxisLabel]="xAxisLabel"
+  [yAxisLabel]="yAxisLabel"
+  [showDataLabel]="true"
+  (select)="barClicked($event, data.label)"
+>
+</ngx-charts-bar-vertical-stacked>
+<section *ngIf="data.length === 0" class='alerts-graph-no-data-section'> {{noDataMsg}}</section>
+</div>

@@ -1,0 +1,30 @@
+.request-changes-ctr {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+
+    .request-change-attributes {
+        columns: 2;
+    }
+
+    .attribute {
+        display: flex;
+        flex-direction: column;
+        margin: 0 20px 20px 0;
+        break-inside: avoid;
+
+        .invalid-field {
+            border: 1px solid red;
+        }
+    }
+
+    .title-label {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    .required {
+        color: red;
+    }
+}

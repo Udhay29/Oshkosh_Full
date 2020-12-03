@@ -1,0 +1,38 @@
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/mixins";
+
+.alert-details-container {
+    margin: 23px;
+  .alert-details-save-btn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+
+    button {
+      @include button(100px, 36px, 6px 6px);
+
+      &[disabled] {
+        @include disabled-button(100px, 36px, 6px 6px);
+      }
+    }
+  }
+
+  .alert-table-paginator {
+    .ui-dropdown-label.ui-inputtext {
+      margin: 0;
+      padding-top: 6px;
+      padding-bottom: 5px;
+    }
+
+    .total-records-para {
+      background-color: #f4f4f4;
+      color: #333;
+      border: 1px solid #c8c8c8;
+      padding: .571em 1em;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+  }
+}

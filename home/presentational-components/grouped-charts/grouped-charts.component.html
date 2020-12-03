@@ -1,0 +1,11 @@
+<p class="heading">{{ data?.label }}</p>
+<div class="card">
+  <div class="graphCard">
+    <ngx-charts-bar-vertical-2d *ngIf="data.length > 0" [scheme]="colorScheme" [customColors]="customColors"
+      [results]="data" [gradient]="gradient" [legendTitle]="''" [xAxis]="showXAxis" [legendPosition]="'below'"
+      [yAxis]="showYAxis" [legend]="showLegend" [showGridLines]="showGridLines" [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+    </ngx-charts-bar-vertical-2d>
+    <section *ngIf="data.length === 0" class='metric-graph-no-data-section'> {{noDataMsg}}</section>
+  </div>
+</div>

@@ -1,0 +1,124 @@
+<ng-container>
+  <section class="standard-container-header">Standard Containers</section>
+  <section class="containers-select">
+    <section class="containers-select-table" *ngIf="containerValues?.length > 0">
+      <table>
+        <tr *ngFor="
+            let row of standardContainersColumns;
+            index as rowIdx;
+            even as evenRow
+          " [ngClass]="{ 'colored-row': evenRow }">
+          <td>{{ row.title }}</td>
+          <td *ngFor="let value of containerValues; index as valueIdx" class="value-cell">
+            <ng-container [ngSwitch]="row.type">
+              <span *ngSwitchDefault
+                [pTooltip]="row.title === 'ID' ? value[ctrDimHeight] + ' x ' + value[ctrDimWidth] + ' x ' + value[ctrDimLength] : ''"
+                tooltipPosition="bottom">
+
+                <input *ngIf="row.title === 'ID'" class='select-container' type="radio" name="selectContainer"
+                  (click)="selectContainer(value)" [checked]="value[containerId] === containerToSelect"
+                  [disabled]="!isEditable" />
+
+                {{value[row.APIMap]}}
+
+              </span>
+              <input *ngSwitchCase="'text'" type='text' [ngModel]="fitment_qty_values[value[containerId]]"
+                (blur)="stdCtrIpChanged($event, row.APIMap, value[containerId])" class='form-control table-input'
+                numberOnly [disabled]="!isEditable" />
+
+            </ng-container>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="containers-select-table no-containers" *ngIf="containerValues?.length === 0 || !containerValues">
+      <p> No Containers found for the current selection</p>
+    </section>
+    <section class="custom-container save-fitment-btn-ctr change-order-btn-ctr">
+      <button class='change-order-btn' (click)="changeCtrOrder()" *ngIf="reOrderAccess"
+        [disabled]="containerOrder.length <= 1">
+        Re-Order Containers
+      </button>
+      <button class='save-fitment-btn' [disabled]="!isEditable || !enableFitment" (click)="saveFitmentValues()">
+        Save Fitment Quantity Values
+      </button>
+      <button class="custom-container-btn" [disabled]="!isEditable" (click)="showCustomContainerPopup = true">
+        Choose Custom Container
+      </button>
+    </section>
+  </section>
+  <section class="standard-racks" *ngIf="racks?.length > 0">
+    <section class="rack-containers" *ngFor="let rack of racks">
+      <span class="rack-heading">{{ rack["RACK_NAME"] }}</span>
+      <section class="racks">
+        <ul class="columns-label-list">
+          <li *ngFor="let column of rackColumns">{{ column.title }}</li>
+        </ul>
+        <section class="containers">
+          <section *ngFor="let container of rack['RACK_DETAILS']" class='container-values-wrapper'>
+            <p class='conatiner-code-label'> {{container[containerId]}}</p>
+            <ul [ngClass]="['container-values', container['COLOR']]">
+              <li *ngFor="let column of rackColumns">
+                {{ container[column.APIMap] }}
+              </li>
+            </ul>
+          </section>
+        </section>
+      </section>
+    </section>
+  </section>
+  <section class="standard-racks no-racks" *ngIf="racks?.length === 0 || !racks">
+    <p> No racks present for the current selection</p>
+  </section>
+
+  <p-dialog header="Select Custom Container" [(visible)]="showCustomContainerPopup" [responsive]="true"
+    showEffect="fade" [modal]="true" [blockScroll]="true" [closeOnEscape]="true" [dismissableMask]="true"
+    [closable]="true" [positionTop]="300" styleClass="select-custom-container-modal"
+    [style]="{maxHeight: '60vh', maxWidth: '600px', display: 'flex', flexDirection: 'column', top: '35vh', transform: 'translateY(-25%)', minWidth : '600px'}"
+    (onHide)="showCustomContainerPopup = false">
+    <section class="custom-container-content">
+      <p>Container code begins with:</p>
+      <section class='custom-container-input-lookup'>
+        <input [(ngModel)]="custContainerSearch" class="cust-container-lookup-ip" />
+        <button class="custom-container-search-btn" (click)="searchForContainers()">Look Up</button>
+      </section>
+      <p *ngIf="custCtrSearchEmpty" class='no-containers-found'>* No containers found with this search term </p>
+      <ul class="container-codes">
+        <li *ngFor="let ctr of customContainers; even as evenRow" [ngClass]="{ 'colored-row': evenRow }">
+          <input type="radio" (click)="changed(ctr[containerCode]);" name="custom-container-code"
+            [id]="ctr[containerCode]" [checked]="ctr[containerCode] === selectedCustContainers ? 'checked' : ''" />
+          <label [for]="ctr[containerCode]">{{ ctr[containerCode] }}</label>
+        </li>
+      </ul>
+    </section>
+    <p-footer *ngIf="selectedCustContainer !== ''">
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton class="custom-container-select-btn" (click)="selectCustContainer()">
+          Done
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+
+  <p-dialog header="Re-Order Containers" [(visible)]="reOrderContainerPopup" [responsive]="true" showEffect="fade"
+    [modal]="true" [blockScroll]="true" [closeOnEscape]="true" [dismissableMask]="true" [closable]="true"
+    [positionTop]="300" styleClass="reOrder-container-modal" [baseZIndex]="-600"
+    [style]="{maxHeight: '60vh', maxWidth: '900px', display: 'flex', flexDirection: 'column', top: '35vh', transform: 'translateY(-25%)', minWidth : '600px'}"
+    (onHide)="reOrderPopUpClose()">
+    <section class="reOrder-container-content">
+      <section cdkDropList cdkDropListOrientation="horizontal" class="ctr-list"
+        (cdkDropListDropped)="orderChanged($event)">
+        <section class="reorder-ctr-code" *ngFor="let ctr of containerOrder" cdkDrag cdkDragBoundary=".ctr-list">
+          {{ctr}}</section>
+      </section>
+    </section>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton class="reOrder-container-btn" (click)="reOrderCtrs()">
+          Save Container Order
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

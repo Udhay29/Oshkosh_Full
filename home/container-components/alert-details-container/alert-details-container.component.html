@@ -1,0 +1,12 @@
+<section class="alert-details-container">
+  <pfep-alert-details-component [tableData]="tableData" [tableColumns]="columns" [title]="title" [tableKey]="tableKey" [dropDownData]="dropDownData" [dataFetching]="dataFetching" [dataEdited]="saveEnabled" [currentScreen]="currentScreen" [initialSearchCriteria]="searchCriteria" (navigateLinkClicked)="navigateToScreen($event)" (recordEdited)="recordEdited($event)" (criteriaChanged)="onCriteriaChange($event)" ></pfep-alert-details-component>
+  
+  <section *ngIf="!hidePaginator" [ngClass]="{'alert-table-paginator': true, 'hide-paginator': !hidePaginator}">
+    <p-paginator [rows]="rows" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,25,50,100]" pageLinkSize="5" [alwaysShow]="false" (onPageChange)="onPageChange($event)"></p-paginator>
+    <p class='total-records-para'>{{recordsString}}</p>
+  </section>
+
+  <section class="alert-details-save-btn">
+      <button class="save-btn" (click)="saveData()" [disabled]="!saveEnabled">Save</button>
+    </section>
+</section>

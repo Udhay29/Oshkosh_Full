@@ -1,0 +1,148 @@
+.admin-ctr {
+  .item-search {
+  border: 1px solid #ced4da;
+  background-color: #f2f2f2;
+
+  padding: 15px;
+  padding-bottom: 23px;
+}
+
+.org-field {
+  margin: 0 auto;
+}
+
+.admin-accordion {
+  margin-top: 25px;
+
+  .ui-accordion-header a {
+    font-family: arial regular;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    margin-top: 20px;
+    background-color: #076589 !important;
+
+    &:hover {
+      background-color: #003b69 !important;
+      color: white  !important;
+      text-decoration: none;
+    }
+
+    &:active {
+      color: white  !important;
+      text-decoration: none;
+
+    }
+    
+    .ui-accordion-toggle-icon {
+      color: white !important;
+    }
+  }
+}
+
+.add-details {
+  margin: 0px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.admin-buttons {
+  margin-right: 20px;
+  margin-top: 25px;
+}
+
+.required {
+  color: #dc3545;
+}
+
+button.disabled-button:disabled:hover {
+  opacity: 0.65;
+}
+
+.checkBoxMargin {
+  margin-top: 10px;
+}
+
+.oshID {
+  padding-left: 12px;
+  padding-right: 28px;
+}
+
+.addUpdateButtons {
+  margin: 0px 2px 0px 2px
+}
+
+.body .ui-multiselect .ui-multiselect-label {
+  font-size: 12px !important;
+}
+
+.buttonMarginPopUp {
+  margin: 35px 5px 5px 5px;
+}
+
+.form-inline .form-group {
+  float: left;
+  margin-right: 15px;
+}
+
+.setdeftrow {
+  width: 100%;
+}
+
+.setdeftrow div.form-group label,
+.search-add-details div.form-group label {
+  font-weight: bold;
+}
+
+.emailopt label,
+.emailopt div input {
+  margin-top: 15px;
+}
+
+.emailopt div input {
+  margin-left: 10px;
+}
+
+.add-user-btn button {
+  margin-top: 30px;
+}
+
+.success {
+  color: #008000
+}
+
+.error {
+  font-size: 12px;
+  color: red;
+}
+
+.margin-center {
+  margin-left: 25%
+}
+
+
+}
+
+.t-header {
+  font-family: arial regular;
+  font-size: 16px;
+  color: #076589;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  background: gray !important;
+  border: none !important;
+}
+
+.ui-table-wrapper {
+  overflow: hidden !important;
+}
+
+.btn-primary.disabled:hover,
+.btn-primary:disabled:hover {
+  background-color: gray;
+  border: none !important;
+}

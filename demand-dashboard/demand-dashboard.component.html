@@ -1,0 +1,138 @@
+<section class='demand-dashboard-ctr'>
+    <div class="pd-header">
+        <div class="page-title ">
+          <h3 class="pg-title">Demand Dashboard</h3>
+        </div>
+      </div>
+      <div class="search-header" style="margin-bottom: 25px;">
+        <div class="row">
+          <div class="form-group col-md-2">
+            <label for="ORG_ID">Branch:</label>
+      
+            <pfep-wild-card-lookup [config]="branch" [defaultselecteddropDownValue]="branchdefaultselecteddropDownValue" (changeEvent)="branchChangeEvent($event)"></pfep-wild-card-lookup>
+          </div>
+      
+          <div class="col-md-2 form-group">
+            <label for="Work">Work Center:<span class="required">*</span></label>
+      
+            <pfep-wild-card-lookup [config]="workCenter" [defaultselecteddropDownValue]="workcenterdefaultselecteddropDownValue" (changeEvent)="wildCardChangeEvent($event)"></pfep-wild-card-lookup>
+          </div>
+          <div class="col-md-2 form-group">
+            <label for="Item">Item Number:</label>
+      
+            <pfep-wild-card-lookup [config]="itemNumber" [defaultselecteddropDownValue]="itemdefaultselecteddropDownValue" (changeEvent)="itemNumberChangeEvent($event)">
+            </pfep-wild-card-lookup>
+          </div>
+          <div class="col-md-2 form-group">
+            <label for="fromDate">From Date:<span class="required">*</span></label>
+            <p-calendar dateFormat="mm-dd-yy" styleClass="md-search-date" [showIcon]="true" [showButtonBar]="true"
+              [(ngModel)]="date.fromDate" [readonlyInput]="true" [minDate]="minimumFromDate" [maxDate]="maximumToDate"
+              #fromDate="ngModel" (onSelect)="checkFromDate(date.fromDate)"></p-calendar>
+          </div>
+          <div class="col-md-2 form-group">
+            <label for="toDate">To Date:<span class="required">*</span></label>
+            <p-calendar dateFormat="mm-dd-yy" [readonlyInput]="true" styleClass="md-search-date" [showIcon]="true"
+              [showButtonBar]="true" [(ngModel)]="date.toDate" #toDate="ngModel" (onSelect)="checkToDate(date.toDate)"
+              [minDate]="minimumFromDate" [maxDate]="maximumToDate"></p-calendar>
+          </div>
+          <div class="col-md-2 form-group top-margin">
+            <button class="btn btn-primary search-btn-look-up" (click)="onSearchDemandList()"
+              [disabled]="newWorkCenter.length === 0">
+              Search
+            </button>
+            &nbsp;&nbsp;
+          </div>
+        </div>
+      </div>
+      <div class="md-table" style="margin-bottom: 25px;" *ngIf="demandSearchList && tableGrid">
+        <p-table [columns]="tableFields" [value]="recordsToDisplay" selectionMode="single" [scrollable]="true"
+          scrollHeight="250px" (onRowSelect)="onEditRow($event)" [(selection)]="selectedRow">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of tableFields">{{ col.header }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+            <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+              <td *ngFor="let col of columns" class="{{ col.cellClass }}" pEditableColumn trackBy="trackTableRow" 
+                [ngStyle]="{position: col.field == 'DAILY_USAGE_OVERRIDE' ? 'relative': 'unset'}">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText numberOnly  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" type="text" [(ngModel)]="rowData['DAILY_USAGE_OVERRIDE']"
+                      (ngModelChange)="optChanged(rowData['DAILY_USAGE_OVERRIDE'],rowIndex)"
+                      *ngIf="col.field == 'DAILY_USAGE_OVERRIDE'" autocomplete="off" [disabled]="!isEditable" />
+                    <span *ngIf="col.field != 'DAILY_USAGE_OVERRIDE'">{{
+                      rowData[col.field]
+                    }}</span>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ rowData[col.field] }}
+                    <p><i *ngIf="col.field == 'DAILY_USAGE_OVERRIDE'" class="edit-icon">&#9998;</i></p>
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="columns.length" align="center">No records found</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-paginator [totalRecords]="demandSearchList.length"
+          [rows]="rowsPerPage"
+          [rowsPerPageOptions]="[10,25,50,100]"
+          [alwaysShow]="false"
+          [styleClass]="'demand-dashboard-paginator'"
+          (onPageChange)="pageChanged($event)"></p-paginator>
+          <p class='total-records-para' *ngIf="demandSearchList.length > 0">{{recordsString}}</p>
+      </div>
+      <span class="required" *ngIf="gType!=='Daily' && showGraph">Note: Blue Window is movable only in Daily</span>
+      
+      <div class="col-md-12 row no-margin-padding row" *ngIf="onLoad">
+        <div class="card col-md-6 graph">
+          <pfep-demand-line-chart [isEditable]="isEditable" [graphdata]="graphdata" [graphType]="gType"
+            (rectChangeDates)="rectDemandChanged($event)" (gType)="buildGraph($event)"
+            *ngIf="graphdata?.Graph?.Axis?.length !== 0 && showGraph"></pfep-demand-line-chart>
+          <section *ngIf="graphdata?.Graph?.Axis?.length === 0 && showGraph" class="graph-no-data-section">
+            {{ "No Data" }}
+          </section>
+        </div>
+        <div class="card col-md-6 legend">
+          <div type="text" style="margin-bottom:30px;padding-top: 10px">
+            <h5>Dynamic Default Demand Window</h5>
+          </div>
+          <ul class="daily-usage-details">
+            <li> First Demand Date : <label>{{ selectedRowCopy?.DEMAND_START_DATE | date: "yyyy-MM-dd" }}</label> </li>
+            <li> Last Demand Date : <label> {{ selectedRowCopy?.DEMAND_END_DATE | date: "yyyy-MM-dd" }}</label> </li>
+            <li> Average Daily Usage(ADU) : <label>{{ selectedRowCopy?.ADU }}</label> </li>
+            <li> Average Interval Demand(AID) : <label> {{ selectedRowCopy?.AVRG_DAILY_USAGE }}</label> </li>
+            <li> Peak Interval Demand(PID) : <label> {{ selectedRowCopy?.PEAK_DAILY_USAGE }}</label> </li>
+            <li> Duration Of Peak(duration within 20% of peak) : <label> {{ selectedRowCopy?.PEAK_DURATION }}</label> </li>
+            <li> Standard Deviation : <label> {{ selectedRowCopy?.STDRD_DEVIATION }}</label> </li>
+            <li> CoV : <label> {{ selectedRowCopy?.COEFFICIENT_OF_VARIATION }}</label> </li>
+            <li> Usage Frequency : <label> {{ selectedRowCopy?.USAGE_FREQUENCY }}</label> </li>
+          </ul>
+        </div>
+      </div>
+      <section class="demand-buttons">
+        <button class="btn btn-primary cancel-btn" style="width: 115px;" (click)="navigateToParent()" *ngIf="onLoadData.isChild">
+        Cancel
+        </button>
+        <button class="btn btn-primary save-btn" style="width: 115px;" (click)="saveResults()" [disabled]="!showGraph"
+        *ngIf="isEditable && (demandSearchList && tableGrid)">
+        Save
+        </button>
+      </section>
+      <p-confirmDialog [width]="600" styleClass='confirm-dialog'></p-confirmDialog>
+      <p-dialog [header]="'Alert'" [(visible)]="showAlert" [responsive]="true" showEffect="fade" [modal]="true" [width]="600">
+        <form class="needs-validation" name="errorAlert" #errorAlert="ngForm" novalidate>
+          <div class="ui-g ui-fluid">
+            <b>{{errorMessage}}</b>
+          </div>
+          <div align = "center">
+            <button type="submit" class="btn btn-primary buttonMargin" (click)="hideDialog()">OK</button>
+          </div>
+        </form>
+      </p-dialog>
+</section>

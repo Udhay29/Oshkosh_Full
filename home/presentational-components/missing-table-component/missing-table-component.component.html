@@ -1,0 +1,88 @@
+<section class='primeNg-table-container-missing-data'>
+  <p-table selectionMode="single" [(selection)]="selectedRecord" (onRowSelect)="onRowSelect($event)"
+    (onRowUnselect)="onRowUnselect()" [autoLayout]="true" [value]="data" [columns]="columns" [scrollable]="true"
+    [scrollHeight]="tableHeight">
+    <ng-template pTemplate="header" *ngIf="data.length > 0">
+      <tr>
+        <th *ngFor="let col of columns" [class]="col.className ? col.className : ''"
+          [attr.rowspan]="groupedColumnsPresent && !groupedColumns[col.value] ? 2 : 1"
+          [attr.colspan]="(groupedColumnsPresent && groupedColumns[col.value]) ? groupedColumns[col.value].length : 1"
+          [ngClass]="{'high-width-cols': highWidthCols[selectedStack].indexOf(col.value) > -1}">
+          {{col.displayName}}</th>
+      </tr>
+      <tr>
+        <th *ngFor="let col of columnsUnderGroup" [class]="col.className ? col.className : ''"
+        [ngClass]="{'high-width-cols': highWidthCols[selectedStack].indexOf(col.value) > -1}">{{col.displayName}}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record>
+      <tr [pSelectableRow]="record">
+        <td *ngFor="let col of totalColumns"
+         [pTooltip] = "col.type === 'dropDown' ? fetchDropDownValue(record[col.APIkey], col.value):record[col.value]"
+         [ngClass]="{'high-width-cols': highWidthCols[selectedStack].indexOf(col.value) > -1}">
+          {{col.type==='dropDown' ? fetchDropDownValue(record[col.APIkey], col.value):record[col.value]}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns *ngIf="data.length === 0 ">
+      <tr>
+        <td [attr.colspan]="totalColumns.length" class="home-drilldown-tables-no-data">
+          No records to display
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog [header]="editPopUpNames[selectedStack] || 'Record'" [(visible)]="selectableRows && showEditModal"
+    [responsive]="true" showEffect="fade" [modal]="true" [blockScroll]="true" (onHide)="editPopUpClosed()"
+    [closeOnEscape]="true" [dismissableMask]="true" [closable]="true" [positionTop]="225"
+    [styleClass]="'missing-table-edit-modal'"
+    [style]="{maxHeight: '65vh', maxWidth: '1200px', display: 'flex', flexDirection: 'column'}"
+    [contentStyle]="{width: '1000px', maxHeight: '55vh'}">
+    <form name="f1" id="f1" #f1="ngForm">
+
+      <section class="ui-g ui-fluid" *ngIf="editedRecord ?  true : true">
+        <section class="ui-g-6" *ngFor="let col of totalColumns trackBy: trackByFn;let i = index">
+          <div class="ui-g-4">
+            <label for="col.value">{{col?.group ? col?.group : ''}} {{col?.displayName}}</label>
+          </div>
+          <div class="ui-g-8" [ngSwitch]="col.type">
+            <select *ngSwitchCase="'dropDown'" (change)="ddValueChanged($event, col.APIkey, col.value)">
+              <option [value]="null"> Select {{col.displayName}}</option>
+              <option *ngFor="let opt of recordToEdit[col.APIkey]" [selected]="opt.IsSelected">
+                {{opt[col.value]}}
+              </option>
+            </select>
+
+            <pfep-search-field *ngSwitchCase="'searchField'" [key]="col.value"
+              [invalidValue]="editedValuesInvalid.indexOf(col.value) > -1" [model]="recordToEdit[col.value]"
+              [options]="searchFieldResults[col.value]" [className]='supplier-field-search'
+              [selectedValue]="recordToEdit[col.value]" (searchClicked)="searchFieldFetch(col.value, $event)"
+              (optionSelected)="searchFieldOptSelected(col.value, $event)"
+              (typing)="searchfieldTyping(col.value, $event)" (ipEmptied)="searchfieldEmptied(col.value, $event)"
+              (ipBlurred)="searchfieldBlurred(col.value, $event)"></pfep-search-field>
+            <input *ngSwitchCase="'text'" pInputText id="col.value" name="col.value_{{i}}"
+              [(ngModel)]="recordToEdit[col.value]" [disabled]="!col.editable" autocomplete="off" />
+            <input *ngSwitchCase="'integer'" pInputText id="col.value" name="col.value_{{i}}"
+              [(ngModel)]="recordToEdit[col.value]" [disabled]="!col.editable" numberOnly autocomplete="off" />
+            <input *ngSwitchCase="'decimal'" pInputText id="col.value" name="col.value_{{i}}" name="col.value_{{i}}"
+              [ngModel]="recordToEdit[col.value]" [disabled]="!col.editable" numberOnly #input5="ngModel"
+              [ngModelOptions]="{updateOn: 'blur'}" customMin="0"
+              [ngClass]="{ 'is-invalid': input5?.errors?.customMin }" (ngModelChange)="recordToEdit[col.value] = $event"
+              autocomplete="off" />
+            <input *ngSwitchDefault pInputText id="col.value" name="col.value_{{i}}"
+              [(ngModel)]="recordToEdit[col.value]" [disabled]="!col.editable" autocomplete="off" />
+          </div>
+        </section>
+      </section>
+    </form>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix edit-popup-footer">
+        <p *ngIf="editedValuesInvalid.length > 0" class='footer-error-note'> One or more atributes values are invalid
+        </p>
+        <button type="button" pButton class='edit-popup-save-btn' (click)="saveData()"
+          [disabled]="editedValuesInvalid.length > 0 || f1?.form?.invalid"> Done </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</section>

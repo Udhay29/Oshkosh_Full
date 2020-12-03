@@ -1,0 +1,124 @@
+@import '../../../assets//scss/variables';
+
+.demand-dashboard-ctr {
+    
+    .search-criteria-form{
+        display: flex;
+        flex-flow: row wrap;
+        padding: 12px;
+        background-color: #f2f2f2;
+        border: 2px solid #dee2e6;
+        margin: 4px;
+    }
+
+    button{
+        cursor: pointer;
+        background-color: #d57e00;
+        border: none;
+        width: 60px;
+        border-radius: 4px;
+    }
+
+    span.ui-calendar, span.ui-calendar input {
+        width: 100%;
+    }
+
+
+    .card {
+        height: auto;
+        width: 750px;
+    }
+    ul.daily-usage-details {
+        list-style: none;
+
+        li {
+        font-size: 16px;
+        font-family: arial regular;
+        padding: 5px;
+        label{
+            font-weight: bold;
+            color: #076589;
+            }
+        }
+
+        li::before {
+            content: "•"; 
+            color:steelblue; 
+            display: inline-block; 
+            width: 2em;
+            margin-left: -1em
+        }
+    
+    }
+
+        p-calendarbody .ui-inputtext .futureDateInvalid {
+            margin-bottom: 0;
+            color: red;
+            font-size: 14px;
+            border: 1px solid red;
+        }
+        .search-btn-look-up{
+            padding: 5px;
+        }
+    
+    .graph-no-data-section{
+        @extend .no-graph-msg;
+    }
+    .no-margin-padding{
+        @extend .no-margin;
+        padding: 0px;
+    }
+    .graph{
+        margin-right: 5px;
+        max-width: 49%;
+    }
+    .legend{
+        margin-left: 5px;
+    }
+    .form-group{
+        label{
+            font-weight: 700;
+        }
+    }
+    .required{
+        color:#dc3545;
+    }
+    .top-margin{
+        margin-top:30px
+    }
+    .demand-buttons{
+        display: flex;
+        justify-content: flex-end;
+
+        > * {
+            margin: 20px;
+
+        }
+    }
+    .total-records-para {
+        background-color: #f4f4f4;
+        color: #333;
+        border: 1px solid #c8c8c8;
+        padding: .571em 1em;
+        text-align: center;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .edit-icon {
+        position: absolute;
+        top: 3px;
+        right: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transform: rotate(70deg);
+        pointer-events: none;
+    }
+   .demand-dashboard-paginator .ui-dropdown-label.ui-inputtext {
+        height: 32px;
+        margin: 0;
+   }
+   .ui-button:enabled:focus{
+        box-shadow: none;
+   }
+}

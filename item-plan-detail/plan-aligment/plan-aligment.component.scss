@@ -1,0 +1,21 @@
+.warning-popup-content-ctr {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .warning-popup-msg-ctr {
+        margin-bottom: 20px;
+        display: flex;
+
+        i {
+            margin: 10px;
+        }
+
+        span {
+            white-space: pre-wrap;
+        }
+    }
+
+    
+}

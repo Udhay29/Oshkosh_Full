@@ -1,0 +1,50 @@
+<div class="t-margin">
+  <br />
+  <h4 class="t-header">PFEP Required</h4>
+</div>
+
+<p-table
+  [columns]="feilds"
+  [value]="data"
+  [scrollable]="true"
+  scrollHeight="280px"
+  sortMode="multiple"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of feilds" [pSortableColumn]="col.field">
+        {{ col.title }}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-rowData
+    let-columns="columns"
+    let-rowIndex="rowIndex"
+  >
+    <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+      <td *ngFor="let col of columns" class="{{ col.cellClass }}">
+        <p
+          *ngIf="col.field == 'ITEM_PLAN_ID'"
+          class="item-plann-nav"
+          (click)="navigateToPou(rowData)"
+        >
+          {{ rowData[col.field] }}
+        </p>
+        <p *ngIf="col.field != 'ITEM_PLAN_ID'">
+          {{ rowData[col.field] }}
+        </p>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length" align="center">No records found</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <p class="num-records">Total {{ data?.length }} Record(s)</p>
+  </ng-template>
+</p-table>

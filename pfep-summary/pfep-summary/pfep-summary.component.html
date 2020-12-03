@@ -1,0 +1,45 @@
+<section class='pfep-summary-container'>
+  <div class="pd-header">
+    <div class="page-title ">
+      <h3 class="pg-title">PFEP Summary</h3>
+    </div>
+  </div>
+  <section class='pfep-summary-search-criteria'>
+    <ng-container *ngFor= "let field of searchFields" [ngSwitch]="field.type">
+      <section class='search-criteria-filter search-criteria-wildcard' *ngSwitchCase="'wildCard'">
+        <p class='title'>{{field.title + ':'}} 
+            <span class="required">*</span>
+        </p>
+        <pfep-wild-card-lookup [config]="field.config" [defaultselecteddropDownValue]="field.config.defaultselecteddropDownValue" [showInvalid]="fieldsEmpty.indexOf(field.key) > -1"
+          (changeEvent)="wildCardChangeEvent($event, field.key)"></pfep-wild-card-lookup>
+      </section>
+      <section class='search-criteria-filter search-criteria-dropDown' *ngSwitchCase="'dropDown'">
+          <p class='title'>{{field.title + ':'}} 
+              <span class="required">*</span>
+          </p>
+          <p-dropdown [style]="{'width':'100%', 'border': fieldsEmpty.indexOf(field.key) > -1 ? '1px solid red' : ''}" (onChange)="searchDDChanged($event, field.key)" [options]="dropDownValues[field.key]" [placeholder]='field.placeholder' [(ngModel)]="searchCriteria[field.key]"></p-dropdown>
+      </section>
+    </ng-container>
+    <button class='pfep-summary-search-btn' (click)="ipFromParent = {ipPresent: false, parent: ''};searchClicked();"> Search </button>
+  </section>
+  
+  <p class='pfep-summary-details-heading pfep-summary-heading t-header' *ngIf="details[itemDesc] !== undefined ||  details[branchDDKey] !== undefined"> Item Branch Data </p>
+  
+  <pfep-details-component *ngIf="details[itemDesc] !== undefined ||  details[branchDDKey] !== undefined" [details]="details" [branchSelected]="branchSelected" [isEditable]="isEditable"  (hasEdited)="changesMade($event)" (isValidForm)="isSaveEnable($event)"></pfep-details-component>
+  
+  <div class="row" *ngIf="details[pouItemPlanDetailsKey]">
+    <div class="col-md-12">
+      <pfep-pou-item-plan (rowClick)="onClickPouItemPlan($event)" [feilds]="itemPlanFields" [data]="details[pouItemPlanDetailsKey] || []"
+        [isEditable]="isEditable" [exportExcel]="exportDataToExcel" [exportEnabled]="(details[pouItemPlanDetailsKey] || []).length > 0 && (details[upStreamPlansDetailsKey] || []).length > 0 "></pfep-pou-item-plan>
+    </div>
+  </div>
+  <div class="row" *ngIf="details[upStreamPlansDetailsKey]">
+    <div class="col-md-12">
+      <pfep-up-stream-item-plan [data]="details[upStreamPlansDetailsKey] || []" (hasEdited)="changesMade($event)"
+        [feilds]="upStreamPlanFields" [orgId]="this.searchCriteria[segment]" [isEditable]="isEditable"></pfep-up-stream-item-plan>
+    </div>
+  </div>
+  <section class='pfep-summary-save' *ngIf=" !isEmptyOrInvalid(details[branchDDKey]) || !isEmptyOrInvalid(details[upStreamPlansDetailsKey])">
+    <button class='pfep-summary-save-btn' (click)="save()" [disabled]="!isEditable || !hasEdits || invalid"> Save </button>
+  </section>
+</section>

@@ -1,0 +1,452 @@
+@import "../../../assets/scss/mixins";
+@import "../../../assets/scss/variables";
+
+.item-plan-detail {
+  max-height: 85vh;
+
+  .item-plan-detail-search .search-header {
+    padding-bottom: 23px;
+  }
+
+  .navigate-to-demand-btn {
+    @include button(100px, 40px, 3px 6px, white);
+
+    margin-right: 15px;
+    align-self: flex-end;
+
+    &.disabled {
+      @include disabled-button(100px, 40px, 3px 6px, white);
+    }
+  }
+
+  .copy-item-plan-btn {
+    @include button(120px, 40px, 3px 6px, white);
+
+    margin-right: 15px;
+    align-self: flex-end;
+
+    &.disabled {
+      @include disabled-button(120px, 40px, 3px 6px, white);
+    }
+  }
+
+  .item-plan-attributes-ctr {
+    display: flex;
+    margin-bottom: 15px;
+  }
+
+  .select-criteria-text {
+    height: 60vh;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fetching-data {
+    height: 45vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    img {
+      width: 50px;
+      margin: 10px;
+      height: 50px;
+    }
+  }
+
+  .attributes {
+    flex: 2;
+    // display: flex;
+    // flex-flow: column wrap;
+    column-count: 2;
+    column-width: 600px;
+    height: 100%;
+
+
+    .attribute {
+      margin-bottom: 9px;
+      //width: 50%;
+      height: 34px;
+      break-inside: avoid;
+
+      label {
+        line-height: 32px;
+        margin-bottom: 0;
+      }
+
+      .invalid-field:not(:disabled) {
+        border: 1px solid red !important;
+      }
+
+      input,
+      select {
+        height: 32px;
+        padding: 5px 5px 5px 10px;
+      }
+
+      .md-search-date {
+        max-height: 32px;
+
+        input {
+          height: 31px;
+        }
+      }
+
+      .attr-link {
+        padding-left: 12px;
+        font-size: 14px;
+        height: 32px;
+        padding: 5px 5px 5px 10px;
+
+        p {
+          color: #6D767D;
+          font-weight: 700;
+        }
+
+        > * {
+          vertical-align: middle
+        }
+      }
+    }
+
+    input.search-field-input:disabled {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+
+  }
+  .erp {
+    flex: 1;
+    display: flex;
+    flex-flow: column wrap;
+    border-left: 1px solid #dee2e6; // new style added
+
+    .item-plan-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+
+      button,
+      a {
+        margin-right: 25px;
+        @include button(auto, auto, 8px 12px);
+
+        &:disabled {
+          @include disabled-button(auto, auto, 8px 12px);
+        }
+      }
+
+      .packaging-calc-btn-ctr button:hover:not(:disabled) {
+        text-decoration: underline;
+      }
+    }
+
+    .erp-card {
+      height: auto;
+      //margin-top: 50px; // new style added 
+      border: none; // new style added 
+
+      .erp-heading {
+        //position: absolute; // new style added 
+        //top: -18px; // new style added 
+        background: white;
+        padding: 4px;
+        text-align: center; // new style added 
+        margin-bottom: 10px; // new style added 
+      }
+
+      .demand-not-avaialble-txt {
+        display: flex;
+        color: red;
+        border: 1px solid red;
+        margin-left: 32%;
+        width: 240px;
+        padding: 10px;
+        margin-bottom: 50px;
+        box-shadow: 0 0 3px red;
+        
+        & > i.pi {
+          color: red;
+          font-size: 35px;
+          margin-right: 10px;
+        }
+
+        span {
+          align-self: center;
+        }
+      }
+
+      .erp-field-container {
+        display:flex;
+        margin-top:25px;
+        justify-content: center; // new style added 
+      }
+      
+      .multi-field {
+          width: 54px !important;
+      }
+    }
+  }
+
+  .erp-card label,
+  .attribute label {
+    font-weight: 600;
+  }
+
+  .change-req-id-ctr {
+    max-height: 0px;
+    background-color: #FFF7DF;
+    color: #CCA023;
+    border: 0px solid #fbce4d;
+    font-size: 14px;
+    transition: max-height 0.5s ease-in-out, border 0.5s ease-in-out, margin-bottom 0.5s ease-in-out, padding 0.5s ease-in-out;
+    overflow: hidden;
+    height: auto;
+    padding: 0;
+    margin-bottom: 0;
+    border-radius: 6px;
+    text-align: center;
+    width: 750px;
+    align-self: center;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0px);
+
+    &.show-req-id {
+      max-height: 70px;
+      border-width: 2px;
+      padding: 8px;
+      margin-bottom: 35px;
+    }
+
+    .change-req-id-span {
+      font-weight: bold;
+      color: #007ad9;
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: #116fbf;
+      }
+    }
+
+    .close-req-id-ctr {
+      cursor: pointer;
+      float: right;
+      color: #CCA023;
+
+      > i {
+        vertical-align: text-bottom;
+      }
+    }
+  
+  }
+
+  
+}
+
+.multi-field-ctr {
+  display: flex;
+  align-items: center;
+  align-content: center;
+
+  .multi-field-label {
+    margin-bottom: 0;
+    padding-right: 10px;
+  }
+  .multi-field {
+    width: 64px !important;
+    margin-right: 10px;
+  }
+}
+
+.md-search-date.ui-calendar.ui-calendar-w-btn .ui-inputtext {
+  width: calc(100% - 2.357em);
+}
+
+.confirmation-dialog-footer {
+  margin: 5px;
+
+  button {
+    @include button(auto, 35px);
+
+    display: inline-block;
+
+    &.cancel-btn {
+      background-color: #828384;
+    }
+  }
+
+  a.warning-popup-navigation {
+    @include button(200px, 35px, 3px 6px, white);
+
+    margin-right: 15px;
+    float: left;
+
+    &:disabled {
+      @include disabled-button(100px, 40px, 3px 6px, white);
+    }
+  }
+
+} 
+
+.item-plan-codes-select-btn button {
+  @include button(65px, 33px);
+
+  float: right;
+
+  &:disabled {
+    @include disabled-button(65px, 33px);
+    border: none !important;
+  }
+}
+
+.field-not-equal {
+  input.form-control,
+  select.form-control {
+    background-color: $pfep-invalid-value-ip-color;
+  }
+}
+
+.create-item-plan-dialog {
+    .create-plan-items-ctr {
+      display: flex;
+      flex-direction: row;
+      margin: 20px;
+      
+      .ui-calendar.ui-calendar-w-btn .ui-inputtext {
+        width: calc(100% - 2.357em);
+      }
+
+      .create-item-plan-dd-ctr {
+        display: flex;
+        justify-content: flex-end;
+      }
+      
+      select.create-item-plan-dd {
+        width: calc(100% - 6px) !important;
+        height: 32px;
+        padding: 5px 5px 5px 10px;
+        margin-left: 0;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+      }
+    }
+
+    .create-plan-items-ctr .create-plan-item-label{ 
+      flex: 1;
+    }
+
+    .create-plan-items-ctr .create-item-plan-input {
+      flex: 2;
+    }
+
+    .create-item-plan-search-date .invalid-field:not(:disabled) {
+      border: 1px solid red !important;
+    }
+
+  .create-item-plan-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px;
+
+    .create-warning-text {
+      color: red;
+      font-style: italic;
+    }
+
+    .create-plan-btn-ctr {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end
+    }
+
+    button {
+      @include button(auto, 35px, 1px 10px);
+      
+      &:disabled {
+        @include disabled-button(auto, 35px, 1px 10px);
+      }
+
+    }
+  }
+  .create-status-div {
+    border: 2px solid black;
+    padding-left: 10px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+  .create-failure {
+    border-color: red;
+    color: red;
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+
+  .create-saving {
+    border-color:rgb(248, 148, 6);
+    color: rgb(248, 148, 6);
+    background-color: rgba(248, 148, 6, 0.1);
+  }
+
+  .required {
+    color: $pfep-required-symbol-color;
+  }
+}
+
+.request-change-dialog {
+  .request-change-footer {
+    display: flex;
+
+    .errorMsg {
+      font-weight: 700;
+      font-size: 12px;
+      align-items: center;
+      display: flex;
+
+      .pi {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .request-btns-ctr {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      @include button(100px, 35px);
+      margin-left: 20px;
+      width: 100px !important;
+
+      &:disabled {
+        @include disabled-button(100px, 35px);
+        width: 100px !important;
+      }
+    }
+  }
+
+  .ui-widget-content {
+    max-height: 550px;
+  }
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .item-plan-detail .attributes .attribute {
+    height:  34px;
+  }
+}
+.item-plan-label {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-family: arial regular;
+}
+.item-plan-search {
+  position: relative;
+  top: 32px;
+}

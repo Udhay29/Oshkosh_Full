@@ -1,0 +1,88 @@
+<div class="pd-header">
+  <div class="page-title ">
+    <h3 class="pg-title">Item Flow Summary</h3>
+  </div>
+</div>
+<form (ngSubmit)="itemFlowForm.form.valid && checkSearchValidityAndSearch(); submitted = true" pfepClickStopPropagation
+  class="needs-validation item-flow-form" #itemFlowForm="ngForm" novalidate name="itemplanform">
+  <div class="row">
+    <div class="col-md-12 ">
+      <div class="search-header">
+        <div class="row item-flow-container">
+          <div *ngFor="let item of wildCardLookUpConfig" [ngClass]="item.styleclass">
+            <label class="pfep-label">{{item.labelText}}:</label>
+            <pfep-wild-card-lookup [config]="item" [defaultselecteddropDownValue]="item.defaultselecteddropDownValue"
+              (changeEvent)="wildCardChangeEvent($event)" [showInvalid]="
+              (item.modelName === workCenter || item.modelName === itemId) &&
+              searchInvalid
+            "></pfep-wild-card-lookup>
+          </div>
+          <div class="col-md-2" *ngIf="statusDropDown.length>0">
+            <label class="pfep-label">Status:</label>
+            <app-select defaultLabel="Select a Status" [loadSelectedValue]="" [data]="statusDropDown" [config]="statusDdconfig"
+              (onChange)="statusOnChange($event)"></app-select>
+          </div>
+          <div class="col-md-2" *ngIf="!statusDropDown.length">
+            <label class="pfep-label">Status:</label>
+            <app-select defaultLabel="Select a Status" [loadSelectedValue]="" [data]="statusDropDown" [config]="statusDdconfig"
+              (onChange)="statusOnChange($event)"></app-select>
+          </div>
+          <div class="col-md-1">
+
+            <button class="btn btn-primary pfep-search" type="submit" pfepClickStopPropagation> <img
+                src="assets/images/icon_search.png" /></button>
+
+          </div>
+          <!-- <div class="col-md-2">
+                <div class="form-group">
+                  <label class="col-form-label">&nbsp;</label>
+                  <div>
+                    <button class="btn btn-primary" type="button">Display Plans</button>
+                  </div>
+                </div>
+              </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="row">
+  <div class="col-md-12 if-export-btn">
+    <button (click)="generateItemFlowExcel()" *ngIf="
+        searchCriteria &&
+        srData.length > 0 &&
+        ipData.length > 0 &&
+        upData.length > 0 &&
+        pfepData.length > 0
+      " class="dt-button buttons-excel buttons-html5 excelbutton"></button>
+  </div>
+</div>
+<div class="row" *ngIf="!submitStatus">
+  <h3 class="col-md-12 select-serch-criteria">Please Enter/Select Search Criteria To Display The Record(s)</h3>
+</div>
+<div class="row" *ngIf="submitStatus">
+  <div class="col-md-12">
+    <pfep-search-results (rowClick)="onClickSearchResult($event)" [data]="srData"
+      [feilds]="ifsTableFields.searchResultFields"></pfep-search-results>
+  </div>
+</div>
+
+<div class="row" *ngIf="searchCriteria && selectedSearchItem && srData.length>0">
+  <div class="col-md-12">
+    <pfep-pou-item-plan (rowClick)="onClickPouItemPlan($event)" [feilds]="ifsTableFields.itemPlanFields" [data]="ipData"
+      [isEditable]="isEditable"></pfep-pou-item-plan>
+  </div>
+</div>
+<div class="row" *ngIf="searchCriteria && selectedSearchItem  && srData.length>0">
+  <div class="col-md-12">
+    <pfep-up-stream-item-plan [data]="upData" (save)="saveUpStreamDate($event)" (isEdited)="isModified($event)"
+      [feilds]="ifsTableFields.upStreamPlanFields" [isEditable]="isEditable" [orgId]="selectedOrgId">
+    </pfep-up-stream-item-plan>
+  </div>
+</div>
+<div class="row pfep-required-ctr" *ngIf="searchCriteria && selectedSearchItem  && srData.length>0">
+  <div class="col-md-12">
+    <pfep-pfep-required [data]="pfepData" [feilds]="ifsTableFields.pfepRequiredFields" [isEditable]="isEditable">
+    </pfep-pfep-required>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<ng-container>
+  <section class="bulk-container-header">Bulk Containers</section>
+  <section class="containers-select">
+    <section class="containers-select-table" *ngIf="containerValues?.length > 0">
+      <table>
+        <tr *ngFor="
+            let row of bulkContainersColumns;
+            index as rowIdx;
+            even as evenRow
+          " [ngClass]="{ 'colored-row': evenRow }">
+          <td>{{ row.title }}</td>
+          <td *ngFor="let value of containerValues; index as valueIdx" class="value-cell">
+            <ng-container [ngSwitch]="row.type">
+              <span *ngSwitchDefault
+                [pTooltip]="row.title === 'ID' ? value[ctrDimHeight] + ' x ' + value[ctrDimWidth] + ' x ' + value[ctrDimLength] : ''"
+                tooltipPosition="bottom">
+
+                <input *ngIf="row.title === 'ID'" type="radio" class='select-container' name="selectContainer"
+                  (click)="selectContainer(value)" [checked]="value[containerId] === containerToSelect"
+                  [disabled]="!isEditable" />
+
+                {{value[row.APIMap]}}</span>
+
+              <input *ngSwitchCase="'text'" type='text' [ngModel]="fitment_qty_values[value[containerId]]"
+                (blur)="stdCtrIpChanged($event, row.APIMap, value[containerId])" class='form-control table-input'
+                numberOnly [disabled]="!isEditable" />
+            </ng-container>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section class="containers-select-table no-containers" *ngIf="containerValues?.length === 0 || !containerValues">
+      <p> No Containers found for the current selection</p>
+    </section>
+    <section class="save-fitment-btn-ctr">
+      <button class='change-order-btn' (click)="changeCtrOrder()" *ngIf="reOrderAccess"
+        [disabled]="containerOrder.length <= 1">
+        Re-Order Containers
+      </button>
+      <button class='save-fitment-btn' [disabled]="!isEditable || !enableFitment" (click)="saveFitmentValues()">
+        Save Fitment Quantity Values
+      </button>
+    </section>
+  </section>
+  <section class="bulk-racks" *ngIf="racks?.length > 0">
+    <section class="rack-containers" *ngFor="let rack of racks">
+      <section class="racks">
+        <ul class="columns-label-list">
+          <li *ngFor="let column of bulkRackColumns">
+            {{ column.title }}
+          </li>
+        </ul>
+        <section class="containers" *ngIf="rack['RACK_DETAILS'].length > 0">
+          <section *ngFor="let container of rack['RACK_DETAILS']" class='container-values-wrapper'>
+            <p class='conatiner-code-label'> {{container[containerId]}}</p>
+            <ul [ngClass]="['container-values', container['COLOR']]">
+              <ng-container *ngIf="container !== {}">
+                <li *ngFor="let column of bulkRackColumns">
+                  {{ container[column.APIMap] }}
+                </li>
+              </ng-container>
+              <ng-container *ngIf="container === {}">
+                <li>
+                  No details found for this rack.
+                </li>
+              </ng-container>
+            </ul>
+          </section>
+        </section>
+        <section class='no-rack-details' *ngIf="rack['RACK_DETAILS'].length === 0 || !rack['RACK_DETAILS']">
+          No details found for this rack
+        </section>
+      </section>
+    </section>
+  </section>
+  <section class="bulk-racks no-racks" *ngIf="racks?.length === 0 || !racks">
+    <p> No racks present for the current selection</p>
+  </section>
+</ng-container>
+
+<p-dialog header="Re-Order Containers" [(visible)]="reOrderContainerPopup" [responsive]="true" showEffect="fade"
+  [modal]="true" [blockScroll]="true" [closeOnEscape]="true" [dismissableMask]="true" [closable]="true"
+  [positionTop]="300" styleClass="reOrder-container-modal" [baseZIndex]="-600"
+  [style]="{maxHeight: '60vh', maxWidth: '900px', display: 'flex', flexDirection: 'column', top: '35vh', transform: 'translateY(-25%)', minWidth : '600px'}"
+  (onHide)="reOrderPopUpClose()">
+  <section class="reOrder-container-content">
+    <section cdkDropList cdkDropListOrientation="horizontal" class="ctr-list"
+      (cdkDropListDropped)="orderChanged($event)">
+      <section class="reorder-ctr-code" *ngFor="let ctr of containerOrder" cdkDrag cdkDragBoundary=".ctr-list">
+        {{ctr}}</section>
+    </section>
+  </section>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton class="reOrder-container-btn" (click)="reOrderCtrs()">
+        Save Container Order
+      </button>
+    </div>
+  </p-footer>
+</p-dialog>

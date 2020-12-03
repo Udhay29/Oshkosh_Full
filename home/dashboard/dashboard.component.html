@@ -1,0 +1,71 @@
+<section class="home-dashboard-container">
+  <section class="dashboard-search-criteria">
+    <pfep-home-search-criteria
+      [searchInputs]="searchInputs"
+      (criteria)="searchCriteria($event)"
+      class="dashboard-search"
+      (criteriaChange) = "criteriaSelected($event)"
+    >
+    </pfep-home-search-criteria>
+  </section>
+<section *ngIf="userOptions.FACILITY_ID && userOptions.ORG_ID;else noDefaultValues">
+    <!-- <h4 class="missing-data-header">Missing Data</h4> -->
+    <section class="missing-data-details-container">
+      <pfep-missing-data
+        [values]="missingDateValues"
+        [Approvals] = 'Approvals'
+        (tile)="missingDataTileClicked($event)"
+      ></pfep-missing-data>
+    </section>
+    <div class="alert-section">
+      <h4 class="section-heading">Alerts</h4>
+      <div class="search-by-date col-md-12 row">
+          <div class="ui-g-12 ui-md-3">
+              <label for="" class="textAlignRight col-form-label heading"
+              >Shortage Relevency Window <span style="font-weight: lighter">(Default 8 Weeks out)</span></label
+            >
+            </div>
+        <div class="ui-g-12 ui-md-2">
+          <p-calendar [(ngModel)]="date.fromDate" #fromDate="ngModel"  [maxDate]="maximumFromDate" (onSelect)="onDateToSelection('fromDate')" readonlyInput="true" dateFormat="mm/dd/yy" showIcon="true" name="fromDate"></p-calendar>
+        </div>
+        <div class="ui-g-12 ui-md-2">
+            <p-calendar [(ngModel)]="date.toDate" #toDate="ngModel" [minDate]="minimumToDate" (onSelect)="onDateToSelection('toDate')" readonlyInput="true" dateFormat="mm/dd/yy" showIcon="true" name="toDate"></p-calendar>
+        </div>
+        <div class="ui-g-12 ui-md-5" style="padding-top: 15px">
+          <ul class="legend">
+            <li><span class="new"></span>BP New</li>
+            <li><span class="superawesome"></span> 2 Weeks</li>
+            <li><span class="awesome"></span> 2-4 Weeks</li>
+            <li><span class="kindaawesome"></span> > 4 Weeks</li>
+          </ul>
+        </div>
+      </div>
+      <section class=" graph-container alerts-container">
+        <app-alerts
+          *ngIf="showGraph"
+          [moqAlertGraphs]="moq_alert_graphs"
+          [requiredAlertGraphs]="required_alert_graphs"
+          [shortageAlertGraphs]="shortage_alert_graphs"
+          [erpAlertGraphs]="this.erp_alert_graphs"
+          [demandGap]="demandGap"
+          (selectedGraphAlert)="selectedGraph($event)"
+        ></app-alerts>
+      </section>
+    </div>
+    <div class="metrics-section">
+      <h4 class="section-heading">Metrics</h4>
+      <section class="graph-container metrics-container">
+        <app-metrics
+          [approved_plan]="approved_plan"
+          [disparate_metrics]="disparate_metrics"
+          *ngIf="showGraph"
+        ></app-metrics>
+      </section>
+    </div>
+  
+
+</section>
+<ng-template  #noDefaultValues>
+  <div class="select-serch-criteria">User need to set default segment and facility values <a routerLink="/administrator">Click here to set default values</a></div>
+</ng-template>
+</section>

@@ -1,0 +1,37 @@
+  @import '../../../../assets/scss/mixins';
+  
+  .header-font{
+      font-size:14px;
+      font-weight: bold;
+  }
+  .add-btn-config{ 
+    @include button(70px, 38px);
+
+    margin: 5px;
+    align-self: flex-end;
+  }
+   
+  .add-details {
+    margin: 0px;
+    padding: 20px;
+    margin-bottom: 25px;
+  }
+
+  .bottom-msg-ctr {
+    margin: 0;
+    padding-right: 0;
+  
+    .btn-ctr {
+      padding-right: 0;
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        margin-left: 20px;
+      }
+    }
+  }
+  th.page-ui-sort {
+    cursor: pointer;
+  }

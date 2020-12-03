@@ -1,0 +1,49 @@
+<p-dialog [header]="'Add Configuration'" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="true"
+  [contentStyle]="{ 'max-width': '620px' }" (onHide)="onClose()">
+  <form (ngSubmit)="save(configurationForm)" class="needs-validation" name="configurationForm"
+    #configurationForm="ngForm" novalidate>
+    <div class="ui-g ui-fluid">
+      <div *ngFor="let col of configurationFields" class="col-md-12 row buttonMargin">
+        <div class="col-md-6 textAlignRight ">
+          <label>{{ col.name }}:<span class="required">*</span></label>
+        </div>
+        <div class="col-md-6 " [ngSwitch]="col.type">
+          <select *ngSwitchCase="'dropdown'" required class="form-control" id="{{ col.name }}" name="{{ col.name }}"
+            [disabled]="col.disable" [(ngModel)]="object[col.key]" (change)="clearFields(col)">
+            <option [ngValue]="null">Select</option>
+            <option *ngFor="let obj of col.options" [ngValue]="obj[col.key]">
+              {{ obj[col.key] }}</option>
+          </select>
+          <input numberOnly required *ngSwitchCase="'number'" customMin="{{ col.min }}" customMax="{{ col.max }}"
+            [disabled]="
+              (object['METHODOLOGY'] === 'P' &&
+                col.key === 'PERCENT_EXTENDED_COST') ||
+              (object['METHODOLOGY'] === 'E' && col.key === 'PIECE_PRICE') ||
+              (object['FACILITY_ID'] === null &&
+                col.key === 'PERCENT_EXTENDED_COST')
+            " type="text" [(ngModel)]="object[col.key]" name="{{ col.key }}" class="form-control invalid"
+            (ngModelChange)="calculateMax(col, col.numberType)" />
+
+          <input required *ngSwitchCase="'text'" type="text" [(ngModel)]="object[col.key]" name="{{ col.name }}"
+            class="form-control" [disabled]="col.disable" />
+        </div>
+      </div>
+    </div>
+    <div align="center">
+      <button type="submit" class="btn btn-primary" [disabled]="
+          configurationForm.invalid || isInValidPercent || piecePercent
+        ">
+        Save
+      </button>
+    </div>
+    <span class="required exceed-msg" *ngIf="isInValidPercent">
+      Extended cost should not exceed 100 %
+    </span>
+    <span class="required exceed-msg" *ngIf="isMinorMax">
+      Enter Valid Data
+    </span>
+    <span class="required exceed-msg" *ngIf="piecePercent">
+      Piece Percent should not be greater than the Prevoius Value
+    </span>
+  </form>
+</p-dialog>

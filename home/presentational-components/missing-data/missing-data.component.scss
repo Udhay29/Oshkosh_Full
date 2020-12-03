@@ -1,0 +1,77 @@
+@import '../../../../../assets/scss/variables';
+
+.home-alerts{
+   display: flex;
+
+    .missing-data-section, .approvals-section{
+        flex: 1;
+    }
+    .missing-data-section {
+        max-width: 710px;
+    }
+    .alerts-child-container {
+        display: flex;
+        //margin-right: 45px;
+
+        > * {
+            height: 107px;
+            border: 1px solid $pfep-border-color;
+            padding: 20px 20px 10px 20px;
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            margin-right: 20px;
+            cursor: pointer;
+            max-width: 400px;
+
+            &:last-child {
+                margin: 0;
+            }
+
+            > .details .heading {
+                @extend .font-bold;
+
+                color: #2f384a;
+                font-size: 14px;
+                margin: 0;
+            }
+            > .details .value {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 40px;
+                color: #0066cc;
+                text-decoration: underline;
+                margin: 0;
+            }
+
+            > .image {
+                display: flex;
+                align-items: flex-end;
+            }
+            
+        }
+    }
+    .approvals-section {
+       margin-left: 40px;
+    //     position: relative;
+    //     &:before {
+    //     content: '';
+    //     border-left: 2px solid black;
+    //     position: absolute;
+    //     left: 0;
+    //     height: 220px;
+    //     top: 60px;
+    // }
+}
+    .missing-data-header, .Approvals-header {
+        @extend .section-header-styles;
+    }
+    // .Approvals-header {
+    //     padding-left: 30px;
+    // }
+    // .PastDueApprovals{
+    //     border: 2px solid black !important;
+    // }
+    // .approvals-section .alerts-child-container{
+    //     padding-left: 30px;
+    // }
+}

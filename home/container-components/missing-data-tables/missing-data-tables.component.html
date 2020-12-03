@@ -1,0 +1,45 @@
+<section class="missing-data-table-container">
+  <h4 class="missing-data-header"> Missing Data </h4>
+  <section class='missing-data-search-criteria' [ngSwitch]="selectedStack">
+      <pfep-home-search-criteria  *ngSwitchCase= "'weightsDimensions'" [searchInputs]="searchInputs.weightsDimensions" (selectedSegment) = "selectedSegment($event)" (criteria)="searchCriteriaChanged($event,'weightsDimensions', true)"></pfep-home-search-criteria>
+      <pfep-home-search-criteria  *ngSwitchCase= "'packagingDetail'" [searchInputs]="searchInputs.packagingDetail" (selectedSegment) = "selectedSegment($event)" (criteria)="searchCriteriaChanged($event, 'packagingDetail', true)"></pfep-home-search-criteria>
+  </section>
+  <section class='missing-data-table-interaction-container'>
+    <section class='missing-data-table-nav-bar'>
+      <pfep-tab-list [tabs]="mDtabsList" (callBack)='onTabClick($event)' [selectedTab]="selectedStack">
+        <section class="missing-data-export-excel">
+            <img src='assets/images/download_icon.png' pTooltip = "Download Excel" (click)='exportExcel()' [ngStyle]="{'pointerEvents': saveEnabled ? 'none' : 'auto', 'filter': saveEnabled ? 'grayscale(100%)' : 'none', 'background-size': 'contain'}"/>
+        </section>
+      </pfep-tab-list>
+    </section>
+    <section class='missing-data-table'>
+      <section class='loading-text-section' *ngIf="dataFetching"  [ngStyle]="{'height': tableHeight+'px'}"> 
+          <span> <img src="assets/images/Rolling-loader.gif"/> Fetching data...</span>
+      </section>
+      <pfep-missing-table-component *ngIf="!dataFetching" [data] = "completeData[selectedStack] || []" [columns]="columns" [groupedColumns]="groupedColumns" [height]="tableHeight" [uniqueKey]="tableKey" [selectableRows]="selectableRows" [selectedStack]="selectedStack" [searchCriteria]="searchCriteria[selectedStack] ? searchCriteria[selectedStack] : initialSearchCriteria.searchCriteria" (recordEdited)="onEdit($event)"></pfep-missing-table-component>
+      <section [ngClass]="{'missing-data-table-paginator': true, 'hide-paginator': hidePaginator}">
+          <p-paginator [rows]="rows[selectedStack]" [totalRecords]="totalRecords[selectedStack]" [rowsPerPageOptions]="[10,25,50,100]" pageLinkSize="5" [alwaysShow]="false" (onPageChange)="fetchPageData($event)"></p-paginator>
+          <p class='total-records-para'>{{recordsString}}</p>
+      </section>
+    </section>
+  </section>
+  <section class="missing-data-save-btn">
+    <button class="save-btn" (click)="saveData()" [disabled]="!saveEnabled">Save</button>
+  </section>
+  <p-dialog [(visible)]="saveInProgress" [responsive]="false" showEffect="fade" [modal]="true"  [blockScroll]="true"
+   [closeOnEscape]="false" [dismissableMask]="false" [closable]="false" [responsive]="true" styleClass='missing-table-saving-overlay'>
+    <section class="ui-g ui-fluid missing-data-saving-icon">
+      <span> <img src="assets/images/Rolling-loader.gif"/> Saving changes ...</span>
+    </section>
+</p-dialog>
+<!-- <p-dialog [(visible)]="showSaveConfirmationDialog" header='Save confirmation' [responsive]="false" showEffect="fade" [modal]="true"  [blockScroll]="true"
+ [closeOnEscape]="false" [dismissableMask]="false" [closable]="false" [responsive]="true" styleClass='save-confirmation-overlay' >
+  <section class="ui-g ui-fluid missing-data-saving-icon">
+    <span> <i class='pi pi-exclamation-triangle'></i> You have unsaved edits. Please save or discard them. </span>
+  </section>
+  <p-footer>
+    <button class='save-btn' (click)="saveChangesAndNavigate()"> <i class='pi pi-check'></i>&nbsp;Save and continue </button>
+    <button class='discard-btn' (click)="discardChangesAndNavigate()"> <i class='pi pi-times'></i>&nbsp; Discard changes </button>
+  </p-footer>
+</p-dialog> -->
+</section>

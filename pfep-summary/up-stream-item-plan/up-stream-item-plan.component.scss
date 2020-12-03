@@ -1,0 +1,34 @@
+.up-stream-save{
+    background-position: right;
+    right: 20px;
+    top: 20px;
+}
+.pou-edit-cell{
+    position: relative;
+}
+.pou-edit{
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 20px;
+}   
+
+
+.autoComplete-search-field .ui-inputtext:enabled.invalid-field{
+    border-color: red !important;
+
+    &:hover {
+        border-color: red !important;
+    }
+}
+
+.pou-edit-cell.ui-editing-cell .ui-calendar.ui-calendar-w-btn .ui-inputtext {
+    width: calc(100% - 2.357em);
+    height: 33px;
+}
+.invalid-field.ui-inputtext:enabled:hover:not(.ui-state-error), .invalid-field.ui-inputtext:enabled {
+    border-color: red !important;
+}
+
+

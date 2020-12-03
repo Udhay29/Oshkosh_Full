@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="t-margin col-md-11">
+    <br />
+    <h4 class="t-header">Upstream Item Plans</h4>
+  </div>
+</div>
+<div class="row">
+<div class="col-md-12">
+    <p-table [columns]="feilds" [value]="data" [scrollable]="true" scrollHeight="280px" sortMode="multiple">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of feilds" [pSortableColumn]="col.field">
+            {{ col.title }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+        <tr>
+          <td *ngFor="let col of columns" class="{{ col.cellClass }}" pEditableColumn (click) = "cellClikedToEdit($event, col, rowData)">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [required]="requiredUpStreamPlansFields.indexOf(col.field) > -1" [maxLength]="col.maxLength" [(ngModel)]="rowData[col.field]"
+                  *ngIf="col.isEdit && col.type == 'text'" class="form-control" (focus)="editRow(rowIndex)" />
+                <input *ngIf="col.isEdit && col.type == 'number'" numberOnly customMin="0" pInputText type="text"
+                  [maxLength]="col.maxLength" [required]="requiredUpStreamPlansFields.indexOf(col.field) > -1" [(ngModel)]="rowData[col.field]" class="form-control"
+                  (focus)="editRow(rowIndex)" />
+
+                <select
+                class='form-control'
+                (change)="ddChanged($event, col.field, rowData)"
+                *ngIf="col.isEdit && col.type === 'dropDown'"
+                [disabled]="ddValues[col.field].length ===  0"
+                >
+                  <option value=""> Select {{col.title}}</option>
+                  <option *ngFor="let opt of ddValues[col.field]" [value]="opt[col.field]"> 
+                    {{col.valueKey ? opt[col.valueKey] : opt[col.field]}}
+                  </option>
+                </select>
+
+                <pfep-search-field *ngIf="col.isEdit && col.type === 'searchField'" [key]="col.field" [invalidValue]="
+                  rowData[col.field] ? false : true
+                " [model]="rowData[col.field]" [options]="searchFieldResults[col.field]"
+                  [className]="upStream-mfp-field-search" appendTo='body' [selectedValue]="
+                rowData[col.field]
+                " (searchClicked)="
+                  searchFieldFetch(col.field, $event, rowData)
+                " (optionSelected)="
+                  searchFieldOptSelected(col.field, rowData, $event)
+                " (typing)="searchfieldTyping(col.field, rowData, $event)"
+                  (ipEmptied)="searchfieldEmptied(col.field, rowData, $event)"
+                  (ipBlurred)="searchfieldBlurred(col.field, rowData, $event)"></pfep-search-field>
+
+                <p-calendar *ngIf="col.isEdit && col.type == 'datefrom' && rowData.EXPIRE_DATE"
+                  [(ngModel)]="rowData[col.field]" [showOnFocus]="false" (onSelect)="editRow(rowIndex)"
+                  (onFocus)="focusItem($event)" [required]="requiredUpStreamPlansFields.indexOf(col.field) > -1" name="{{ col.field }}" [readonlyInput]="false"
+                  [dataType]="'string'" [showIcon]="true" [autoZIndex]="true" [baseZIndex]="99999" [disabled]="false"
+                  [showButtonBar]="false" [touchUI]="true" [maxDate]="formatDate(rowData.EXPIRE_DATE)"
+                  [minDate]="formatDate('')" [dateFormat]="'mm/dd/yy'" [hideOnDateTimeSelect]="true"
+                  [placeholder]="'mm/dd/yyyy'" (onInput)="editRow(rowIndex)" [inputStyleClass]="
+                  ['', null].indexOf(rowData[col.field]) > -1 &&
+                  requiredUpStreamPlansFields.indexOf(col.field) > -1
+                    ? 'invalid-field'
+                    : ''
+                "></p-calendar>
+                <p-calendar *ngIf="col.isEdit && col.type == 'datefrom' && !rowData.EXPIRE_DATE"
+                  [(ngModel)]="rowData[col.field]" (onSelect)="editRow(rowIndex)" (onFocus)="focusItem($event)"
+                  [showOnFocus]="false" [required]="requiredUpStreamPlansFields.indexOf(col.field) > -1" name="{{ col.field }}" [readonlyInput]="false"
+                  [dataType]="'string'" [showIcon]="true" [autoZIndex]="true" [baseZIndex]="99999" [disabled]="false"
+                  [showButtonBar]="false" [touchUI]="true" [maxDate]="formatDate('')" [minDate]="formatDate('')"
+                  [dateFormat]="'mm/dd/yy'" [hideOnDateTimeSelect]="true" [placeholder]="'mm/dd/yyyy'" (onInput)="editRow(rowIndex)" 
+                  [inputStyleClass]="
+                  ['', null].indexOf(rowData[col.field]) > -1 &&
+                  requiredUpStreamPlansFields.indexOf(col.field) > -1
+                    ? 'invalid-field'
+                    : ''
+                ">
+                </p-calendar>
+
+                <p-calendar *ngIf="col.isEdit && col.type == 'dateto'" [(ngModel)]="rowData[col.field]"
+                  (onSelect)="editRow(rowIndex)" (onFocus)="focusItem($event)" [showOnFocus]="false"
+                  name="{{ col.field }}" [baseZIndex]="99999" [readonlyInput]="false" [dataType]="'string'"
+                  [showIcon]="true" [autoZIndex]="true" [disabled]="false" [showButtonBar]="false" [touchUI]="true"
+                  [minDate]="formatDate(rowData.EFFECTIVE_DATE)" [maxDate]="formatDate('')" [dateFormat]="'mm/dd/yy'"
+                  [hideOnDateTimeSelect]="true" [placeholder]="'mm/dd/yyyy'" (onInput)="editRow(rowIndex)"></p-calendar>
+                <p *ngIf="!col.isEdit">{{ rowData[col.field] }}</p>
+              </ng-template>
+              <ng-template pTemplate="output">
+                <p>
+                  {{ rowData[col.field]
+                  }}<i *ngIf="col.isEdit" class="pou-edit">&#9998;</i>
+                </p>
+
+              </ng-template>
+            </p-cellEditor>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length" align="center">
+            No records found
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <p class="num-records">Total {{ data?.length }} Record(s)</p>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<button class="btn btn-primary up-stream-savebtn" title="Save" (click)="saveUpstream()"
+*ngIf="isEditable && data.length">Save</button>
+
+<!-- <div class="row pull-right save-item-plan hide">
+    <div class="col-md-2 ">
+      <button class="btn btn-primary " disabled type="button">Save Plans Updates</button>
+    </div>
+
+  </div> -->
+
+<!--<td><input type="text" readonly name=Mfp_Id[{{i}}] value={{item.Mfp_Id}}></td>
+             <td><input type="text" readonly name=Container_Code[{{i}}] value={{item.Container_Code}}></td>
+             <td><input type="text" readonly name=PickFacing_Qnty[{{i}}] value={{item.PickFacing_Qnty}}></td>
+          -->

@@ -1,0 +1,33 @@
+<section class="home-alerts">
+  <section class="missing-data-section">
+    <h4 class="missing-data-header">Missing Data</h4>
+    <section class="alerts-child-container">
+      <section class="weights-dimensions" (click)="missingDataTileClicked('weightsDimensions')">
+        <section class="details">
+            <p class="weights-dimensions-section-heading  heading"> Weights & Dimensions</p>
+            <p class="value">{{values?.WeightDimension}}</p>
+        </section>
+        <section class= "image"> <img src='assets/images/icon_weight_dimensions.png'/> </section>
+      </section>
+      <section class="packaging-detail" (click)="missingDataTileClicked('packagingDetail')">
+        <section class="details">
+            <p class="packaging-detail-section-heading heading"> Packaging Detail</p>
+            <p class="value">{{values?.PackagingDetail}}</p>
+        </section>
+        <section class= "image"> <img src='assets/images/icon_packaging.png'/> </section>
+      </section>
+    </section>
+  </section>
+  <section class="approvals-section">
+    <h4 class="Approvals-header">Approvals</h4>
+    <section class="alerts-child-container">
+      <section class="PastDueApprovals" (click)="missingDataTileClicked('PastDueApprovals')">
+        <section class="details">
+          <p class="pastdue-approvals-section-heading heading">Past Due Approvals</p>
+          <p class="value">{{Approvals?.PastDueApprovals}}</p>
+        </section>
+        <section class="image"></section>
+      </section>
+    </section>
+  </section>
+</section>

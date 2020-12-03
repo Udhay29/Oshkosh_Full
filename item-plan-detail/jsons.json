@@ -1,0 +1,511 @@
+{
+  "planDetails": {
+    "ITEM_PLAN_ID": 55999,
+    "ITEM_ID": "12600869-009",
+    "ITEM_DESC": "HOSE ASSY #3-4 CR 64.0 8230C",
+    "ITEM_HEIGHT": 4.5,
+    "ITEM_WIDTH": 5.5,
+    "ITEM_LENGTH": 6.0,
+    "ORG_ID": "DEF",
+    "FACILITY_ID": "STH001",
+    "WORK_CENTER_ID": "S621",
+    "SUPPLYING_LOCATION": "Abs Station",
+    "MTRL_FLOW_PLAN_ID": "GRN-STH-M-3",
+    "PRESENTATION_METHOD": [
+      {
+        "PRESENTATION_TYPE": "Bag",
+        "IsSelected": false
+      },
+      {
+        "PRESENTATION_TYPE": "Bin",
+        "IsSelected": true
+      },
+      {
+        "PRESENTATION_TYPE": "Bulk",
+        "IsSelected": false
+      },
+      {
+        "PRESENTATION_TYPE": "Hand Stack",
+        "IsSelected": false
+      },
+      {
+        "PRESENTATION_TYPE": "Kit",
+        "IsSelected": false
+      }
+    ],
+    "CONTAINER_CODE": "C0007",
+    "CONTAINER_SID": 48,
+    "LINE_SIDE_QUEUE_QTY": null,
+    "PICK_FACING_QNTY": 123,
+    "CONTAINER_ORIENTATION": [
+      {
+        "ORIENTATION": "L",
+        "IsSelected": false
+      },
+      {
+        "ORIENTATION": "W",
+        "IsSelected": false
+      }
+    ],
+    "ItemPlanStatus": [
+      {
+        "ITEM_PLAN_STATUS": "Active",
+        "IsSelected": true
+      },
+      {
+        "ITEM_PLAN_STATUS": "Archived",
+        "IsSelected": false
+      },
+      {
+        "ITEM_PLAN_STATUS": "Planning",
+        "IsSelected": false
+      }
+    ],
+    "EFFECTIVE_DATE": "2018-03-01T00:00:00",
+    "EXPIRE_DATE": "2019-12-31T00:00:00",
+    "STOCKING_TYPE": "P",
+    "TASK_ID": "139637",
+    "PLANNED_IN_WC_SID": null,
+    "DO_NOT_PLAN": [
+      {
+        "DO_NOT_PLAN": "Y",
+        "IsSelected": true
+      }
+    ],
+    "HANDSTACK_SPACE_LENGTH": null,
+    "HANDSTACK_SPACE_WIDTH": null,
+    "HANDSTACK_SPACE_HEIGHT": null,
+    "HANDSTACK_SPACE_QUANTITY": null,
+    "KIT_TYPE": [
+      {
+        "KIT_TYPE": "Master",
+        "IsSelected": false
+      },
+      {
+        "KIT_TYPE": "Work Order",
+        "IsSelected": false
+      }
+    ],
+    "MASTER_KIT_ID": null,
+    "KIT_SPACE_LENGTH": null,
+    "KIT_SPACE_WIDTH": null,
+    "KIT_SPACE_HEIGHT": null,
+    "BAG_QUANTITY": null,
+    "BAGS_PER_HOOK_QUANTITY": null,
+    "ERP_CONTAINER_CODE": "HDS",
+    "ERP_KNBN_CARDS_NBR": 1,
+    "ERP_CONTAINER_SIZE": 30,
+    "ERP_LVL_ONE_CONTAINER": "C0007",
+    "STANDARD_PACK_QUANTITY": 1,
+    "CONTAINER_QTY": null,
+    "HDS_REORDER_POINT_QTY": 2,
+    "HDS_REORDER_QTY": 3,
+    "SUPERMARKET_QUEUE": null,
+    "ADU": 7.9,
+    "AID": 23.89,
+    "PID": 26,
+    "DAILY_USAGE_OVERRIDE": "25",
+    "CONTAINER_IN_HEIGHT": 23.0,
+    "CONTAINER_IN_WIDTH": 25.0,
+    "CONTAINER_IN_LENGHT": 27.0,
+    "EMPTY_CONTAINER_WEIGHT": 85.0,
+    "MTRL_FLOW_PLAN_DESC": "MWA to ECT kanban",
+    "REPLENISH_CYCLE_BY_DAYS": 3,
+    "SUPERMARKET_IND": "Y",
+    "REPLENISHMENT_METHOD_CODE": "MRP"
+  },
+  "execute": {
+    "STANDARD_CONTAINERS": [
+      {
+        "CONTAINER_ID": "C0001",
+        "MAX_DENSITY": 100,
+        "FILL_CAPACITY": 32,
+        "GROSS_WEIGHT": 3,
+        "FITMIT_QNTY": 1,
+        "CONTAINER_IN_HEIGHT": 4.5,
+        "CONTAINER_IN_WIDTH": 5.5,
+        "CONTAINER_IN_LENGHT": 9.4
+      },
+      {
+        "CONTAINER_ID": "C0002",
+        "MAX_DENSITY": 0,
+        "FILL_CAPACITY": 32.4,
+        "GROSS_WEIGHT": 2.6,
+        "FITMIT_QNTY": 2,
+        "CONTAINER_IN_HEIGHT": 6.8,
+        "CONTAINER_IN_WIDTH": 13.0,
+        "CONTAINER_IN_LENGHT": 9.4
+      },
+      {
+        "CONTAINER_ID": "C0003",
+        "MAX_DENSITY": 1,
+        "FILL_CAPACITY": 30.4,
+        "GROSS_WEIGHT": 4.6,
+        "FITMIT_QNTY": 8,
+        "CONTAINER_IN_HEIGHT": 6.8,
+        "CONTAINER_IN_WIDTH": 13.0,
+        "CONTAINER_IN_LENGHT": 21.4
+      }
+    ],
+    "BULK_CONTAINERS": [
+      {
+        "CONTAINER_ID": "C0005",
+        "MAX_DENSITY": 9,
+        "FILL_CAPACITY": 99,
+        "GROSS_WEIGHT": 59,
+        "CONTAINER_IN_HEIGHT": 0,
+        "CONTAINER_IN_WIDTH": 48.0,
+        "CONTAINER_IN_LENGHT": 40.4
+      },
+      {
+        "CONTAINER_ID": "C0006",
+        "MAX_DENSITY": 8,
+        "FILL_CAPACITY": 85,
+        "GROSS_WEIGHT": 62,
+        "CONTAINER_IN_HEIGHT": 17.4,
+        "CONTAINER_IN_WIDTH": 27.3,
+        "CONTAINER_IN_LENGHT": 29.4
+      },
+      {
+        "CONTAINER_ID": "C0007",
+        "MAX_DENSITY": 9,
+        "FILL_CAPACITY": 96,
+        "GROSS_WEIGHT": 85,
+        "CONTAINER_IN_HEIGHT": 26.6,
+        "CONTAINER_IN_WIDTH": 27.0,
+        "CONTAINER_IN_LENGHT": 29.4
+      }
+    ],
+    "STANDARD_RACKS": [
+      {
+        "RACK_NAME": "4ft Global",
+        "RACK_DETAILS": [
+          {
+            "CONTAINER_ID": "C0001",
+            "CAPACITY": 500,
+            "QUANTITY": 5,
+            "RECOMMENDED_QUANTITY": 6,
+            "PICK_FACE_REQ": 1,
+            "LINEAR": 14,
+            "COLOR": "GREEN"
+          },
+          {
+            "CONTAINER_ID": "C0002",
+            "CAPACITY": 0,
+            "QUANTITY": 4,
+            "RECOMMENDED_QUANTITY": 1,
+            "PICK_FACE_REQ": 0,
+            "LINEAR": 15,
+            "COLOR": "RED"
+          },
+          {
+            "CONTAINER_ID": "C0003",
+            "CAPACITY": 2,
+            "QUANTITY": 2,
+            "RECOMMENDED_QUANTITY": 27,
+            "PICK_FACE_REQ": 13,
+            "LINEAR": 15,
+            "COLOR": "YELLOW"
+          }
+        ]
+      },
+      {
+        "RACK_NAME": "4ft Old Global",
+        "RACK_DETAILS": [
+          {
+            "CONTAINER_ID": "C0001",
+            "CAPACITY": 400,
+            "QUANTITY": 4,
+            "RECOMMENDED_QUANTITY": 5,
+            "PICK_FACE_REQ": 1,
+            "LINEAR": 14,
+            "COLOR": "GREEN"
+          },
+          {
+            "CONTAINER_ID": "C0002",
+            "CAPACITY": 0,
+            "QUANTITY": 3,
+            "RECOMMENDED_QUANTITY": 1,
+            "PICK_FACE_REQ": 0,
+            "LINEAR": 15,
+            "COLOR": "RED"
+          },
+          {
+            "CONTAINER_ID": "C0003",
+            "CAPACITY": 1,
+            "QUANTITY": 1,
+            "RECOMMENDED_QUANTITY": 27,
+            "PICK_FACE_REQ": 26,
+            "LINEAR": 15,
+            "COLOR": "YELLOW"
+          }
+        ]
+      },
+      {
+        "RACK_NAME": "6ft Global",
+        "RACK_DETAILS": [
+          {
+            "CONTAINER_ID": "C0001",
+            "CAPACITY": 500,
+            "QUANTITY": 5,
+            "RECOMMENDED_QUANTITY": 6,
+            "PICK_FACE_REQ": 1,
+            "LINEAR": 14,
+            "COLOR": "GREEN"
+          },
+          {
+            "CONTAINER_ID": "C0002",
+            "CAPACITY": 0,
+            "QUANTITY": 4,
+            "RECOMMENDED_QUANTITY": 1,
+            "PICK_FACE_REQ": 0,
+            "LINEAR": 15,
+            "COLOR": "RED"
+          },
+          {
+            "CONTAINER_ID": "C0003",
+            "CAPACITY": 2,
+            "QUANTITY": 2,
+            "RECOMMENDED_QUANTITY": 27,
+            "PICK_FACE_REQ": 13,
+            "LINEAR": 15,
+            "COLOR": "YELLOW"
+          }
+        ]
+      },
+      {
+        "RACK_NAME": "6ft Old Global",
+        "RACK_DETAILS": [
+          {
+            "CONTAINER_ID": "C0001",
+            "CAPACITY": 400,
+            "QUANTITY": 4,
+            "RECOMMENDED_QUANTITY": 5,
+            "PICK_FACE_REQ": 1,
+            "LINEAR": 14,
+            "COLOR": "GREEN"
+          },
+          {
+            "CONTAINER_ID": "C0002",
+            "CAPACITY": 0,
+            "QUANTITY": 3,
+            "RECOMMENDED_QUANTITY": 1,
+            "PICK_FACE_REQ": 0,
+            "LINEAR": 15,
+            "COLOR": "RED"
+          },
+          {
+            "CONTAINER_ID": "C0003",
+            "CAPACITY": 1,
+            "QUANTITY": 1,
+            "RECOMMENDED_QUANTITY": 27,
+            "PICK_FACE_REQ": 26,
+            "LINEAR": 15,
+            "COLOR": "YELLOW"
+          }
+        ]
+      },
+      {
+        "RACK_NAME": "Trilogiq",
+        "RACK_DETAILS": [
+          {
+            "CONTAINER_ID": "C0001",
+            "CAPACITY": 300,
+            "QUANTITY": 3,
+            "RECOMMENDED_QUANTITY": 4,
+            "PICK_FACE_REQ": 1,
+            "LINEAR": 14,
+            "COLOR": "GREEN"
+          },
+          {
+            "CONTAINER_ID": "C0002",
+            "CAPACITY": 0,
+            "QUANTITY": 2,
+            "RECOMMENDED_QUANTITY": 1,
+            "PICK_FACE_REQ": 0,
+            "LINEAR": 15,
+            "COLOR": "RED"
+          },
+          {
+            "CONTAINER_ID": "C0003",
+            "CAPACITY": 1,
+            "QUANTITY": 1,
+            "RECOMMENDED_QUANTITY": 27,
+            "PICK_FACE_REQ": 26,
+            "LINEAR": 15,
+            "COLOR": "YELLOW"
+          }
+        ]
+      }
+    ],
+    "BULK_RACKS": [
+      {
+        "RACK_NAME": "Bulk Rack",
+        "RACK_DETAILS": [
+          {
+            "CONTAINER_ID": "C0005",
+            "CAPACITY": 9,
+            "QUANTITY": 1,
+            "RECOMMENDED_QUANTITY": 0,
+            "PICK_FACE_REQ": 3,
+            "LINEAR": 48,
+            "COLOR": "YELLOW"
+          },
+          {
+            "CONTAINER_ID": "C0006",
+            "CAPACITY": 8,
+            "QUANTITY": 1,
+            "RECOMMENDED_QUANTITY": 0,
+            "PICK_FACE_REQ": 4,
+            "LINEAR": 31.9,
+            "COLOR": "YELLOW"
+          },
+          {
+            "CONTAINER_ID": "C0007",
+            "CAPACITY": 9,
+            "QUANTITY": 1,
+            "RECOMMENDED_QUANTITY": 0,
+            "PICK_FACE_REQ": 3,
+            "LINEAR": 31.9,
+            "COLOR": "YELLOW"
+          }
+        ]
+      }
+    ]
+  },
+  "mfrpSearchField": [
+    {
+      "MTRL_FLOW_PLAN_ID": "ECT-1",
+      "MTRL_FLOW_PLAN_DESC": "MWA to ECT kanban",
+      "REPLENISH_CYCLE_BY_DAYS": 3,
+      "SUPERMARKET_IND": null
+    },
+    {
+      "MTRL_FLOW_PLAN_ID": "ECT-2",
+      "MTRL_FLOW_PLAN_DESC": "GDC to ECT kanban",
+      "REPLENISH_CYCLE_BY_DAYS": 3,
+      "SUPERMARKET_IND": true
+    }
+  ],
+  "itemPlanCodes": [
+    {
+        "ITEM_PLAN_ID": 8209,
+        "ITEM_ID": "123687A",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "363786"
+    },
+    {
+        "ITEM_PLAN_ID": 8210,
+        "ITEM_ID": "12600148",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "140233"
+    },
+    {
+        "ITEM_PLAN_ID": 8211,
+        "ITEM_ID": "12601195",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139632"
+    },
+    {
+        "ITEM_PLAN_ID": 8212,
+        "ITEM_ID": "12601196",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139632"
+    },
+    {
+        "ITEM_PLAN_ID": 8213,
+        "ITEM_ID": "12601197",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139633"
+    },
+    {
+        "ITEM_PLAN_ID": 8214,
+        "ITEM_ID": "12601293",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "138229"
+    },
+    {
+        "ITEM_PLAN_ID": 8214,
+        "ITEM_ID": "12601293",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "372250"
+    },
+    {
+        "ITEM_PLAN_ID": 8215,
+        "ITEM_ID": "12601324-T01",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139637"
+    },
+    {
+        "ITEM_PLAN_ID": 8215,
+        "ITEM_ID": "12601324-T01",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139650"
+    },
+    {
+        "ITEM_PLAN_ID": 8215,
+        "ITEM_ID": "12601324-T01",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139651"
+    },
+    {
+        "ITEM_PLAN_ID": 8216,
+        "ITEM_ID": "12601325",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139650"
+    },
+    {
+        "ITEM_PLAN_ID": 8217,
+        "ITEM_ID": "12601326",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139651"
+    },
+    {
+        "ITEM_PLAN_ID": 8218,
+        "ITEM_ID": "12601327",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139637"
+    },
+    {
+        "ITEM_PLAN_ID": 8219,
+        "ITEM_ID": "12601328-003",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "400857"
+    },
+    {
+        "ITEM_PLAN_ID": 8220,
+        "ITEM_ID": "12602025-T02",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139649"
+    },
+    {
+        "ITEM_PLAN_ID": 8221,
+        "ITEM_ID": "12602165",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139530"
+    },
+    {
+        "ITEM_PLAN_ID": 8222,
+        "ITEM_ID": "12602437",
+        "WORK_CENTER_ID": "S621",
+        "SUPPLYING_LOCATION": "Greenville Warehouse",
+        "TASK_ID": "139580"
+    }
+  ]
+}

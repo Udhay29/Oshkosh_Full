@@ -1,0 +1,70 @@
+<div class="row mfcr-search">
+  <div class="col-md-12">
+    <h3 class="pg-title">Material Flow Change Request (MFCR)</h3>
+  </div>
+  <div class="col-md-12">
+    <div class="search-header">
+      <div class="row">
+        <div *ngFor="let item of wildCardLookupConfig" [ngClass]="item.styleclass">
+          <label class="mfcr-label">{{item.labelText}}:</label>
+          <pfep-wild-card-lookup [config]="item" [defaultselecteddropDownValue]="item.defaultselecteddropDownValue"
+            (changeEvent)="wildCardChangeEvent($event)" [showInvalid]="
+              (item.modelName === 'FACILITY_ID') &&
+              searchInvalid
+            "></pfep-wild-card-lookup>
+        </div>
+        <div class="col-md-2">
+          <label class="mfcr-label">Status:</label>
+          <select class="form-control" name="" (change)="changeStatus($event)">
+            <option [value]="''">Select a Status</option>
+            <option [value]="status[itemPlanStatusDDKey]" *ngFor="let status of statusDropDownValues">
+              {{ status[itemPlanStatusDDKey] }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="mfcr-label">Assigned To:</label>
+          <input [(ngModel)]="searchCriteria.ASSIGNED_TO" class="form-control" [ngModelOptions]="{ standalone: true }"
+            id="assignedTo" name="assignedTo" type="text" autocomplete="off" placeholder="Assigned to" />
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary search-btn-look-up mfcr-search" (click)="searchClicked()">
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+    <section class="select-criteria-text" *ngIf="!showGrid">
+      Please Enter/Select Search Criteria to select and view details of a certain
+      Item Plan
+    </section>
+    <!-- <section class="fetching-data">
+      <span>
+        <img src="assets/images/Rolling-loader.gif" /> Fetching details ...</span>
+    </section> -->
+  </div>
+
+  <div class="col-md-12" *ngIf="showGrid">
+    <div class="row">
+      <h4 class="t-header header-mar col-md-5">Search Results ({{searchResult.TotalCount}}) <span> (Please
+          select/click below record(s) to display
+          related item plan(s))</span></h4>
+      <div class="col-md-5 grid-drop-mar">
+        <div class="row">
+          <label class="mfcr-grid-label col-md-2">Change Grid View:</label>
+          <select class="form-control col-md-3" name="" (change)="changeGridValue($event)">
+            <option [value]="''">Select </option>
+            <option [value]="data.DROP_DOWN_VALUE" *ngFor="let data of gridViewDataDD">
+              {{ data.DROP_DOWN_VALUE }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2 table-btns">
+        <div class="md-download btn-download dwld-icon-mar" (click)="exportToExcel()"></div>
+      </div>
+      <pfep-mfcr-table-forms [mfcrDataList]="searchResult" (pagination)="changePage($event)"
+        [itemPlanDetailFn]="itemDetailFn"></pfep-mfcr-table-forms>
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,22 @@
+.mfcr-table-ctr {
+    th, td {
+        text-align: center;
+    }
+    .planIdLink {
+        color: blue;
+        margin: 0px;
+    }
+    .planIdLink:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+
+    #table-export-pdf {
+        th, td {
+            text-align: center;
+            border: 1px solid black;
+            padding: 10px;
+        }
+    }
+}

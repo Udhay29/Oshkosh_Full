@@ -1,0 +1,34 @@
+@import '../../../../assets/scss/variables';
+
+
+
+.item-plan-nav{
+    color: blue;
+    text-align: center;
+
+    &:hover{
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.pfep-summaru-pou-table {
+    margin-top: 20px;
+    
+    .pou-table-heading-div {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.pfep-summaru-pou-table tr.no-item-plan-id.pou-table {
+    background-color: $pfep-row-highlight-color;
+}
+
+.download-icon img {
+    background-size: contain;
+    margin: 0px 10px 3px 0px;
+    width: 22px;
+    height: 23px;
+}
+

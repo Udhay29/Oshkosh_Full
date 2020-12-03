@@ -1,0 +1,36 @@
+<section class='request-changes-ctr'>
+  <form action="#" [formGroup]="requestChangeDetails" autocomplete="off" *ngIf="requestChangeAttrs.length > 0">
+    <div class="request-change-attributes">
+      <div class="attribute" *ngFor="let item of requestChangeAttrs">
+        <label class='title-label'>{{ item.title }}:
+          <!-- <span class='required' *ngIf="requestChangeMandatoryFields.indexOf(item.formControlName) > -1"> * </span> -->
+        </label>
+        <div class="attr-ctr" [ngSwitch]="item.type">
+          <input type="text" class="form-control" [ngClass]="{
+              'invalid-field':
+                invalidFields.indexOf(item.formControlName) > -1
+            }" name="" autocomplete="false" *ngSwitchCase="'text'" (blur)="ipChanged(item.formControlName)"
+            [formControlName]="item.formControlName" maxlength={{item.maxlength}} />
+
+          <select class="form-control" name="" *ngSwitchCase="'dropdown'" [ngClass]="{
+              'invalid-field':
+                invalidFields.indexOf(item.formControlName) > -1
+            }" (change)="
+              ddValueChange($event.target.value, item.key, item.ddKey)
+            ">
+            <option value="null"> Select {{ item.title }}</option>
+            <option *ngFor="let opt of requestChangeDetails.controls[item.formControlName].value"
+              [selected]="opt.IsSelected === true" [value]="opt[item.ddKey]">
+              {{ item.valueKey ? opt[item.valueKey] : opt[item.ddKey] }}</option>
+          </select>
+
+          <input type="text" class="form-control" [ngClass]="{
+              'invalid-field':
+                invalidFields.indexOf(item.formControlName) > -1
+            }" name="" autocomplete="false" *ngSwitchCase="'number'" (blur)="ipChanged(item.formControlName)"
+            [formControlName]="item.formControlName" numberOnly="true" maxlength="4"/>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

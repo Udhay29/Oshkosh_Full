@@ -1,0 +1,391 @@
+<section class="item-plan-detail">
+  <div class="tab-pane item-plan-detail-search">
+    <div class="page-title">
+      <h3 class="pg-title">Item Plan Detail</h3>
+    </div>
+    <div class="search-header">
+      <div class="row">
+        <div *ngFor="let item of wildCardLookUpConfig" [ngClass]="item.styleclass">
+          <label class="item-plan-label">{{item.labelText}}:</label>
+          <pfep-wild-card-lookup [config]="item" [defaultselecteddropDownValue]="item.defaultselecteddropDownValue"
+            (changeEvent)="wildCardChangeEvent($event)" [showInvalid]="
+              (item.modelName === workCenterDDkey || item.modelName === itemId) &&
+              searchInvalid
+            "></pfep-wild-card-lookup>
+        </div>
+        <div class="col-md-2">
+          <label class="item-plan-label">Status:</label>
+          <select class="form-control" name="" (change)="changeStatus($event)">
+            <option [value]="'Select a Status'">Select a Status</option>
+            <option [value]="status[itemPlanStatusDDKey]" *ngFor="let status of statusDropDownValues">
+              {{ status[itemPlanStatusDDKey] }}</option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary search-btn-look-up item-plan-search" (click)="searchClicked()">
+            Search
+          </button>
+        </div>
+        <a href="#" *ngIf="showDetails" class="navigate-to-demand-btn col-md-1"
+          [ngClass]="{'disabled': emptyField(this.ip_details.controls[itemPlanId].value)}"
+          (click)="navigateToDemand($event)">
+          Demand Profile
+        </a>
+        <button *ngIf="showDetails" class="btn copy-item-plan-btn" (click)="copyItemPlan()">
+          {{ copyStateActive  ? 'Cancel Copy' : 'Copy Plan' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <form action="#" [formGroup]="ip_details" autocomplete="off">
+    <div class="pd-content" style=" margin-top: 15px;">
+      <div class="pd-content container-fluid">
+        <hr />
+        <section class='change-req-id-ctr' *ngIf="!copyStateActive"
+          [ngClass]="{'show-req-id': showDetails && showChangeReqId && (changeRequestId !== null)}">
+          There is an open Change Request for this Item plan. The Change Request Id is &nbsp;
+          <span class='change-req-id-span' (click)="navigateToMFCR(changeRequestId)"> {{changeRequestId }} </span>
+          <span (click)="showChangeReqId = false" class='close-req-id-ctr'><i class='pi pi-times'></i></span>
+        </section>
+        <div class="row item-plan-attributes-ctr" *ngIf="showDetails">
+          <div class="attributes">
+            <div class="row attribute" *ngFor="let item of itemPlanAttributes">
+              <label for="" class="col-md-4">{{ item.title }}:</label>
+              <div class=" col-md-6" [ngClass]="{
+                  'field-not-equal':
+                    unEqualRelatedFields.indexOf(item.formControlName) > -1
+                }" [ngSwitch]="item.type">
+                <input type="text" class="form-control" [ngClass]="{
+                    'invalid-field':
+                      isEditable &&
+                      invalidFields.indexOf(item.formControlName) > -1
+                  }" name="" autocomplete="false" *ngSwitchCase="'text'" (blur)="ipChanged(item.formControlName)"
+                  [formControlName]="item.formControlName" />
+
+                <select class="form-control" name="" *ngSwitchCase="'dropdown'" [ngClass]="{
+                    'invalid-field':
+                      isEditable &&
+                      invalidFields.indexOf(item.formControlName) > -1
+                  }" (change)="
+                    ddValueChange($event.target.value, item.key, item.ddKey)
+                  " [disabled]="
+                    !isEditable ||
+                    (allEditableFields.indexOf(item.formControlName) > -1 &&
+                      getPresentationBasedFields().indexOf(
+                        item.formControlName
+                      ) === -1) || (!copyStateActive && fieldsToDisableForReq.indexOf(
+                        item.formControlName
+                      ) > -1)
+                  ">
+                  <option value="null"> Select {{ item.title }}</option>
+                  <option *ngFor="let opt of ip_details.controls[item.formControlName].value"
+                    [selected]="opt.IsSelected === true" [value]="opt[item.ddKey]">
+                    {{ item.valueKey ? opt[item.valueKey] : opt[item.ddKey] }}</option>
+                </select>
+
+                <select class="form-control" name="" *ngSwitchCase="'item-plan-dropdown'" [disabled]="!isEditable"
+                  [ngClass]="{
+                    'invalid-field':
+                      isEditable &&
+                      invalidFields.indexOf(item.formControlName) > -1
+                  }" (change)="
+                    ddValueChange($event.target.value, item.key, item.ddKey)
+                  ">
+                  <option value="null"> Select Plan Status</option>
+                  <option *ngFor="let opt of ip_details.controls[item.formControlName].value"
+                    [selected]="opt.IsSelected === true" [disabled]="disablePlanStatus(opt['ITEM_PLAN_STATUS'])">
+                    {{ opt[item.ddKey] }}</option>
+                </select>
+
+                <select class="form-control" name="" *ngSwitchCase="'supermarket-id-dropdown'" [ngClass]="{
+                    'invalid-field':
+                      isEditable &&
+                      invalidFields.indexOf(item.formControlName) > -1
+                  }" (change)="
+                    ddValueChange($event.target.value, item.key, item.ddKey)
+                  " [disabled]="!isEditable || currentSuperMarketInd === 'N'">
+                  <option value="null"> Select {{ item.title }}</option>
+                  <option *ngFor="let opt of ip_details.controls[item.formControlName].value"
+                    [selected]="opt.IsSelected === true">
+                    {{ opt[item.ddKey]}}
+                  </option>
+                </select>
+
+                <input type="text" class="form-control" [ngClass]="{
+                    'invalid-field':
+                      isEditable &&
+                      invalidFields.indexOf(item.formControlName) > -1
+                  }" name="" autocomplete="false" *ngSwitchCase="'number'" (blur)="ipChanged(item.formControlName)"
+                  [formControlName]="item.formControlName" numberOnly="true" />
+
+                <section class="attr-link" *ngSwitchCase="'link'">
+                  <a *ngIf="!emptyField(ip_details.controls[item.formControlName].value)" href='#'
+                    (click)="linkClicked($event, item.formControlName)">
+                    {{ip_details.controls[item.formControlName].value}} </a>
+                  <p *ngIf="emptyField(ip_details.controls[item.formControlName].value)">
+                    N/A
+                  </p>
+                </section>
+
+                <section *ngSwitchCase="'multi'" class="multi-field-ctr">
+                  <ng-container *ngFor="let multiField of multiValueFieldsmap[item.key]">
+                    <label class="multi-field-label">{{
+                      multiField.title
+                    }}</label>
+                    <input [formControlName]="multiField.formControlName" [ngClass]="{
+                        'multi-field': true,
+                        'invalid-field':
+                          isEditable &&
+                          invalidFields.indexOf(multiField.formControlName) > -1
+                      }" (blur)="ipChanged(multiField.formControlName)" class="form-control" numberOnly />
+                  </ng-container>
+                </section>
+                <section *ngSwitchCase="'date'">
+                  <p-calendar dateFormat="mm-dd-yy" styleClass="md-search-date" [inputStyleClass]="
+                      isEditable &&
+                      invalidFields.indexOf(item.formControlName) > -1
+                        ? 'invalid-field'
+                        : ''
+                    " [showIcon]="true" [placeholder]="'MM-DD-YYYY'" [showButtonBar]="true"
+                    [formControlName]="item.formControlName" (onSelect)="onDateChange($event, item.formControlName)"
+                    (onClose)="onDateClose(item.formControlName)" (onBlur)="onDateClose(item.formControlName)"
+                    [readonlyInput]="false" [appendTo]="'body'" dataType="string"></p-calendar>
+                </section>
+                <pfep-search-field *ngSwitchCase="'searchField'" [key]="item.formControlName" [invalidValue]="
+                    isEditable &&
+                    invalidFields.indexOf(item.formControlName) > -1
+                  " [model]="ip_details.controls[item.formControlName].value"
+                  [options]="searchFieldResults[item.formControlName]" [className]="'mfp-field-search'"
+                  [isDisabled]="!isEditable" [selectedValue]="
+                    ip_details.controls[item.formControlName].value
+                  " (searchClicked)="
+                    searchFieldFetch(item.formControlName, $event, false)
+                  " (optionSelected)="
+                    searchFieldOptSelected(item.formControlName, $event)
+                  " (typing)="searchfieldTyping(item.formControlName, $event)"
+                  (ipEmptied)="searchfieldEmptied(item.formControlName, $event)"
+                  (ipBlurred)="searchfieldBlurred(item.formControlName, $event)"></pfep-search-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 erp">
+            <div class="erp-card card">
+              <div class="card-body">
+                <h5 class="card-title erp-heading">ERP Values</h5>
+                <span class='demand-not-avaialble-txt' *ngIf="erpDemandNotAvailable">
+                  <i class="pi pi-info-circle"></i> <span> No current demand. </span>
+                </span>
+                <div class="form-group">
+                  <div class="erp-field-container" *ngFor="let erp of erpFields">
+                    <label for="" class="col-md-5 col-form-label">{{ erp.title }}:</label>
+                    <div class="col-md-6" [ngSwitch]="erp.type" [ngClass]="{
+                        'field-not-equal':
+                          unEqualRelatedFields.indexOf(erp.formControlName) > -1
+                      }">
+                      <input *ngSwitchCase="'text'" type="text" class="form-control" name=""
+                        [formControlName]="erp.formControlName" disabled />
+
+                      <section *ngSwitchCase="'multi'" class="multi-field-ctr">
+                        <ng-container *ngFor="
+                            let multiField of multiValueFieldsmap[erp.key]
+                          ">
+                          <label class="multi-field-label">{{
+                            multiField.title
+                          }}</label>
+                          <input [formControlName]="multiField.formControlName" [ngClass]="{
+                              'multi-field': true,
+                              'invalid-field':
+                                isEditable &&
+                                invalidFields.indexOf(
+                                  multiField.formControlName
+                                ) > -1
+                            }" (blur)="ipChanged(multiField.formControlName)" class="form-control" numberOnly
+                            disabled />
+                        </ng-container>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <section class="select-criteria-text" *ngIf="displayOnLoadtext">
+    Please Enter/Select Search Criteria to select and view details of a certain
+    Item Plan
+  </section>
+  <section class="fetching-data" *ngIf="fetchingDetails && !showDetails">
+    <span>
+      <img src="assets/images/Rolling-loader.gif" /> Fetching details ...</span>
+  </section>
+
+  <pfep-container-options *ngIf="showDetails" [rcButtonsExist]="!copyStateActive" [APIoptions]="calculationAPIoptions"
+    [saveFn]="save" [navigateBackOptions]="{navigateBack : navigateBack, displayCancelBtn : displayCancelBtn()}"
+    [containerSelected]="containerSelected" [updateItemValuesOnExecute]="updateItemValuesOnExecute"
+    [resetSelection]="resetSelection" [enableSave]="invalidFields.length === 0 && hasEdit" [disableExecuteBtn]="
+      [binSelectValue, bulkSelectValue].indexOf(
+        getDDValue(ip_details.controls[presentation].value, presentationTypeKey)
+      ) === -1
+    " [isEditable]="isEditable" [fitmentSaveFields]="fitmentSaveFields" (isValueChange)="hasEdited($event)"
+    [requestChangeFn]="requestChangeClicked" [changeHistoryFn]="navigateToMFCR" [cancelRequestFn]="cancelChangeReq"
+    [disableChangeHistory]="changeRequestId === null">
+  </pfep-container-options>
+
+  <p-dialog header="Choose Plan Status Code" [responsive]="true" [(visible)]="showModal" showEffect="fade"
+    [modal]="true" [blockScroll]="true" [closeOnEscape]="true" [dismissableMask]="true" [closable]="true"
+    [positionTop]="200" [styleClass]="'parts-table-edit-modal'" [style]="{
+      height: '65vh',
+      width: '800px',
+      display: 'flex',
+      flexDirection: 'column',
+      'box-shadow': '0 0'
+    }" [contentStyle]="{width: '100%'}">
+    <section class="ui-g ui-fluid" *ngIf="itemPlanCodes">
+      <p-table [columns]="planCodesColumns" [(selection)]="selectedItemPlan" [scrollable]="true" [value]="itemPlanCodes"
+        selectionMode="single" (onRowSelect)="rowClickFn($event, true)" (onRowUnselect)="rowClickFn($event, false)"
+        scrollHeight="400px">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of planCodesColumns">
+              {{ col.header }}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+          <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+            <td *ngFor="let col of planCodesColumns" class="{{ col.APIMap }}">
+              {{ rowData[col.APIMap] }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </section>
+    <p-footer *ngIf="showModal">
+      <div class="ui-dialog-buttonpane ui-helper-clearfix item-plan-codes-select-btn">
+        <button type="button" pButton (click)="getItemIdData(false, '')" label="Done"
+          [disabled]="disableSelectBtn"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog styleClass="create-item-plan-dialog" [style]="{ width: 'auto', transform: 'translateX(-10%)' }"
+    header="Create Item Plan" [(visible)]="showCreatePopup" [responsive]="true" showEffect="fade" [modal]="true"
+    [blockScroll]="true" [closeOnEscape]="false" [dismissableMask]="false" [closable]="false"
+    (onHide)="createPopUpClosed()">
+    <section *ngIf="showCreateError"
+      [ngClass]="{'create-status-div': true, 'create-failure': createStatus.error, 'create-saving': createStatus.saving}">
+      {{createStatus.error ? 'Plan could not be created. Please try again.' : 'Creating Plan...'}}
+    </section>
+    <section class="create-plan-items-ctr" *ngFor="let item of createPlanAttributes">
+      <span class="create-plan-item-label">
+        {{ item.title + ':' }}
+        <span *ngIf="createPlanMandatoryAttrs.indexOf(item.formControlName) > -1" class="required">*</span>
+      </span>
+      <ng-container [ngSwitch]="item.type">
+        <section *ngSwitchCase="'date'" class="create-item-plan-input">
+          <p-calendar dateFormat="mm-dd-yy" styleClass="create-item-plan-search-date"
+            (onSelect)="createDateSelected($event)" [showIcon]="true" [placeholder]="'MM-DD-YYYY'"
+            [showButtonBar]="true" [(ngModel)]="createPlanData[item.formControlName]" [readonlyInput]="false"
+            [appendTo]="'body'" [baseZIndex]="99998" dataType="string"></p-calendar>
+        </section>
+        <section class="create-item-plan-input" *ngSwitchCase="'searchField'">
+          <!-- <pfep-search-field
+            [key]="item.formControlName"
+            [model]="createPlanData[item.formControlName]"
+            [options]="searchFieldResults[item.formControlName]"
+            [className]="'mfp-field-search-create-plan'"
+            appendTo="body"
+            (searchClicked)="
+              searchFieldFetch(item.formControlName, $event, true)
+            "
+            (optionSelected)="
+              createPlanSearchFieldOptSelected(item.formControlName, $event)
+            "
+            (typing)="createPlanSearchfieldTyping(item.formControlName, $event)"
+            (ipEmptied)="
+              createPlanSearchfieldEmptied(item.formControlName, $event)
+            "
+            (ipBlurred)="
+              createPlanSearchfieldBlurred(item.formControlName, $event)
+            "
+          ></pfep-search-field> -->
+        </section>
+        <section class="create-item-plan-dd-ctr" *ngSwitchCase="'dropDown'">
+          <select class='create-item-plan-dd form-control'
+            (change)="createPlanDDValueChange($event, item.formControlName)">
+            <option [value]="''"> Select {{item.title}}</option>
+            <option *ngFor="let opt of createMFPList" [value]="opt[item.formControlName]">
+              {{opt[item.valueKey]}}
+            </option>
+          </select>
+        </section>
+      </ng-container>
+    </section>
+    <p-footer>
+      <section class="create-item-plan-footer">
+        <span class="create-warning-text">
+          # Fields marked with <span class="required">(&nbsp; * &nbsp;)</span> in this section are mandatory</span>
+        <section class="create-plan-btn-ctr">
+          <button class="create-plan-save-btn" [disabled]="allCreateValuesPresent()" (click)="createPlan();">
+            Create Plan
+          </button>
+          <button class="create-plan-cancel-btn" (click)=" showCreatePopup = false; resetAllValues(true);">
+            Cancel
+          </button>
+        </section>
+      </section>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog styleClass="confirmation-dialog"
+    [style]="{'min-width': '500px', transform: 'translateX(-10%)', width: '1100px' }" header="Confirmation"
+    [(visible)]="showConfirmationPopup" [responsive]="true" showEffect="fade" [modal]="true" [blockScroll]="true"
+    [closeOnEscape]="false" [dismissableMask]="false" [closable]="false" [contentStyle]="{width: '100%'}"
+    [positionTop]="200" (onHide)="warningPopUpClose()">
+    <section class="confirmation-dialog-content">
+      <pfep-plan-aligment [msg]="warningMsg || ''" [tableData]="warningPopupDetails || []"> </pfep-plan-aligment>
+    </section>
+    <p-footer>
+      <section class="confirmation-dialog-footer">
+        <a href="#" class="warning-popup-navigation" (click)="warningPopupNavigation($event)">
+          Navigate to PFEP Summary
+        </a>
+        <button class="proceed-btn" (click)="save(true); showConfirmationPopup = false">
+          Yes, save with existing values
+        </button>
+        <button class="cancel-btn" (click)="showConfirmationPopup = false">
+          Don't save
+        </button>
+      </section>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog styleClass="request-change-dialog" [style]="{ transform: 'translateX(-10%)', width: '600px'}"
+    header="Proposed New Values" [(visible)]="showRequestChangePopup" [responsive]="true" showEffect="fade"
+    [modal]="true" [blockScroll]="true" [closeOnEscape]="false" [dismissableMask]="false" [closable]="false"
+    [contentStyle]="{width: '100%', height: '600px'}" [positionTop]="150" (onHide)="requestChangeClosed()">
+    <section class="request-change-dialog-content">
+      <pfep-request-change [itemDetails]="requestChangeValues" (hasEdited)="hasEdited()">
+      </pfep-request-change>
+    </section>
+    <p-footer>
+      <section class='request-change-footer'
+        [ngStyle]="{'justify-content': requestChangeError ? 'space-between' : 'flex-end'}">
+        <span class='required errorMsg' *ngIf="requestChangeError">
+          <i class='pi pi-info-circle'></i>
+          Update any value to submit Change Request
+        </span>
+        <section class='request-btns-ctr'>
+          <button class='request-done-btn' (click)="progressChangeRequest()"
+            [disabled]="requestChangeComp.invalidFields.length > 0">
+            Submit
+          </button>
+          <button class='request-cancel-btn' (click)="requestChangeCancelClicked()"> Cancel </button>
+        </section>
+      </section>
+    </p-footer>
+  </p-dialog>
+</section>

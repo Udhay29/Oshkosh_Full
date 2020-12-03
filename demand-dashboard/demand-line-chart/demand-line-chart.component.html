@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <div class="col-md-12 row no-margin">
+        <div class="col-md-8" style="padding-top: 15px;padding-left: 0px;">
+            <ul class="legend">
+                <li><span class="DC"></span>Demand Curve</li>
+                <li><span class="AID"></span>AID</li> 
+                <li><span class="PID"></span>PID</li>
+                <li><span class="POC"></span>PO Commitments</li>
+                <li><span class="IID"></span>Item Plan ID</li>
+            </ul>
+        </div>
+        <div class="buttonMargin alignSelectRight col-md-3">
+            <select class="form-control col-md-12" id="Org_Id" name="ddd" [(ngModel)]="graphType" (change)="changeGraph()">
+                <option *ngFor="let obj of ['Daily','Weekly','Monthly']" [ngValue]="obj">{{obj
+                    }}</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <div id="graph"></div>
+    </div>
+</div>

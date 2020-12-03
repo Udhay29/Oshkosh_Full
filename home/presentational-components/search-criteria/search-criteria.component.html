@@ -1,0 +1,32 @@
+<section class='search-criteria-container'>
+  <form #searchForm="ngForm" class="search-criteria-form">
+    <section *ngFor="let dropDown of searchInputs.dropDowns" class="search-criteria-dropDown"
+      [ngClass]="dropDown.className" [ngStyle]="{'order': dropDown.order !== 0 ? dropDown.order : 0}">
+      <select [name]="dropDown.name" [required]="dropDown.required"
+        [ngClass]="{'invalidEntry': invalidFields[dropDown.name] ? invalidFields[dropDown.name] : false }"
+        (change)="ddChanged($event, dropDown.name)">
+        <option [value]="null" [selected]="!dropDown.valueToSet">{{dropDown.defaultOption}}</option>
+        <option *ngFor="let opt of dropDown.options" [value]="opt[dropDown.valueKey]"
+          [selected]="dropDown.valueToSet === opt[dropDown.valueKey]">{{opt[dropDown.displayValueKey]}}</option>
+      </select>
+    </section>
+    <section *ngFor="let ipBox of searchInputs.inputs" class="search-criteria-input" [ngClass]="ipBox.className"
+      [ngStyle]="{'order': ipBox.order !== 0 ? ipBox.order : 0}">
+      <input [type]="ipBox.type" [value]="ipBox['valueToSet'] || ''" [placeholder]="ipBox.placeHolder"
+        [name]="ipBox.name" [required]="ipBox.required" autocomplete="off"
+        [ngClass]="{'invalidEntry': invalidFields[ipBox.name] ? invalidFields[ipBox.name] : false } "
+        (change)="ipChanged($event, ipBox.name)" />
+    </section>
+    <section *ngFor="let wcSearch of searchInputs.wildCards" class="search-criteria-input home-lookup-select"
+      [ngClass]="wcSearch.className" [ngStyle]="{'order': wcSearch.order !== 0 ? wcSearch.order : 0}">
+      <pfep-wild-card-lookup [config]="wcSearch.wildCardConfig"
+        [defaultselecteddropDownValue]="wcSearch.defaultselecteddropDownValue"
+        (changeEvent)="wildCardChangeEvent($event)">
+      </pfep-wild-card-lookup>
+    </section>
+    <button  class="search-button"  (click)="searchClicked(searchForm.value)"
+      [ngStyle]="{'order': searchInputs.inputs.length + ((searchInputs.dropDowns) ? searchInputs.dropDowns.length : 0) + ((searchInputs.wildCards) ? searchInputs.wildCards.length : 0)}">
+      <img src="assets/images/icon_search.png" />
+    </button>
+  </form>
+</section>

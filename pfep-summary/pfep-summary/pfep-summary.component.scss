@@ -1,0 +1,77 @@
+@import '../../../../assets/scss/mixins';
+@import '../../../../assets/scss/variables';
+
+.pfep-summary-container {
+    .pfep-summary-search-criteria {
+        @extend .section-styles;
+        display: flex;
+        padding: 16px;
+        margin-top: 25px;
+        padding-bottom: 22px;
+
+        > *:not(button) {
+            margin-right: 15px;
+            min-width: 250px;
+        }
+
+        .search-criteria-filter {
+            display: flex;
+            flex-flow: column;
+
+            .title {
+                font-weight: 700;
+                font-size: 14px;
+                margin-bottom: 8px;
+                font-family: arial regular;
+                
+                .required {
+                    color: $pfep-required-symbol-color;
+                }
+            }
+        }
+
+        .pfep-summary-search-btn {
+            @include button(80px, 38px);
+
+            align-self: flex-end;
+            margin-left: 20px;
+        }
+
+        .ui-dropdown, input.look-up-field, span.look-up-search-icon {
+            border: 1px solid #ced4da;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+    
+    .pfep-summary-heading {
+        margin: 20px 0 5px;
+    }
+
+    .pfep-summaru-pou-table, .pfep-summary-upstream-table {
+        th, td {
+            text-align: center;
+        }
+    }
+
+    .pfep-summary-save {
+        @extend .section-styles;
+
+        padding: 15px;
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+
+        > button.pfep-summary-save-btn {
+            @include button(80px, auto, 5px 10px);
+
+            align-self: flex-end;
+
+            &:disabled {
+                @include disabled-button(80px, auto, 5px 10px);
+            }
+        }
+    }
+}

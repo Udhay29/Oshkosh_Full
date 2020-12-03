@@ -1,0 +1,8 @@
+@import '../../../../../assets/scss/variables';
+
+.metric-graph-no-data-section {
+  @extend .no-graph-msg;
+}
+.graphCard{
+  height:250px;
+}

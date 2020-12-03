@@ -1,0 +1,27 @@
+<div id="loadingDiv" [hidden]="showLoader">
+    <div class="loader"></div>
+</div>
+<pfep-header *ngIf="showApp"></pfep-header>
+<div class="col-md-12 route-content">
+    <router-outlet></router-outlet>
+</div>
+
+<p-dialog header='Confirmation' [visible]="modalOpen" [responsive]="true" showEffect="fade" [modal]="true"  [blockScroll]="true"
+   [closeOnEscape]="true" [dismissableMask]="false" [closable]="false"  [styleClass]="'save-confirmation-modal'"
+   >
+
+   <section class='confirmation-modal-ctr'>
+       <p class='confirmation-modal-text'> 
+           There are some unsaved changes in this page. <br/> <br/> Do you want to navigate without saving? 
+       </p>
+       <section class='confirmation-modal-btn-ctr'>
+           <button (click)="stay()">
+               Stay and save changes
+           </button>
+           <button  (click)="navigate()">
+               Navigate away
+           </button>
+       </section>
+   </section>
+
+</p-dialog>

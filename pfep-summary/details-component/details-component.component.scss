@@ -1,0 +1,184 @@
+@import "../../../../assets/scss/variables";
+
+.pfep-summary-details-container {
+  //border-top: 1px solid $pfep-border-color;
+  display: flex;
+  flex-flow: column;
+  border: 1px solid $pfep-border-color;
+
+  .pfep-summary-dd-heading {
+    font-size: 14px;
+  }
+
+  .pfep-summary-branch-description {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    flex: 1;
+    font-size: 14px;
+    border-bottom: 1px solid $pfep-border-color;
+    margin-left: 1px;
+    background-color: $pfep-section-background-color;
+
+    > * {
+      width: 350px;
+      height: 60px;
+      display: flex;
+      flex-flow: column;
+      justify-content: space-around;
+    }
+
+    .pfep-summary-description {
+      margin: 0;
+    }
+
+    .pfep-summary-desc span {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+
+  .pfep-summary-branch-dropDown {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > * {
+      width: 100%;
+    }
+  }
+
+  .pfep-summary-details {
+    flex: 6;
+    font-size: 14px;
+    columns: 300px 6;
+    margin: 20px 0;
+
+    .pfep-summary-attribute-container {
+      padding: 8px 15px;
+      flex: 1 1 30px;
+      display: flex;
+      break-inside: avoid;
+      flex-flow: column wrap;
+    }
+
+    .pfep-summary-multi-valued-ctr {
+        .pfep-summary-attribute-value:not(.multi-valued-attribute-value) {
+            display: flex;
+            padding: 0;
+            background-color: white;
+            border: 0;
+            font-weight: normal;
+
+            > * {
+                flex: 1;
+                justify-content: flex-start;
+            }
+        }
+
+        > .pfep-summary-attribute-value {
+          margin-right: 30px;
+        }
+
+        .pfep-summary-multi-valued-values-ctr {
+            display: flex;
+    
+            .multi-valued-attribute-value {
+                max-width: 50px;
+                margin-right: 10px;
+                padding: 5px 5px 5px 10px;
+
+                &:not(:last-child) {
+                    margin-right: 0;
+                }
+
+                &input.value-not-avaialble:not(disabled) {
+                    background-color: $pfep-invalid-value-ip-color;
+                    border-width: 1px;
+                }
+            }
+
+            span.multi-valued-attribute-value {
+              padding-top: 7px;
+            }
+    
+            .multi-valued-attribute-name {
+                max-width: 20px;
+                max-height: 21px;
+            }
+        }
+
+    }
+
+    .pfep-summary-attribute-name {
+      flex: 2;
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+      font-size: 14px;
+      max-width: 100%;
+
+      &.value-not-avaialble {
+        // color: #fd4141;
+        //font-weight: bold;
+      }
+    }
+
+    .pfep-summary-attribute-value {
+      flex: 3;
+      min-height: 21px;
+      font-weight: 600;
+      font-size: 16px;
+      max-width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+    }
+
+    input.pfep-summary-attribute-value {
+      border-radius: 0.25em;
+      min-height: 21px;
+      padding: 5px 5px 5px 10px;
+      border: 1px solid $pfep-border-color;
+      margin-right: 25px;
+
+      &.value-not-avaialble {
+          background-color: $pfep-invalid-value-ip-color;
+          border-width: 1px;
+      }
+    }
+    
+    input.pfep-summary-attribute-value:disabled {
+      background-color: #e9ecef;
+      border-width: 2px;
+    }
+
+    &.details-not-available {
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+    }
+  }
+}
+
+
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .pfep-summary-branch-description {
+    min-height: 100px;
+  }
+
+  .pfep-summary-details {
+    min-height: 375px;
+  }
+
+  .pfep-summary-attribute-container {
+    height: 93px;
+  }
+
+}

@@ -1,0 +1,53 @@
+@import "../../../../assets/scss/variables";
+
+.alignSelectRight {
+  text-align: -webkit-right;
+  text-align: -moz-right;
+  text-align: -o-right;
+  text-align: -ms-right;
+}
+
+/* basic positioning */
+.legend {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.legend li {
+  float: left;
+  margin-right: 10px;
+}
+
+.legend span {
+  border: 1px solid #ccc;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 6px 2px 2px 2px;
+}
+
+/* your colors */
+.legend .DC {
+  background-color: steelblue;
+}
+
+.legend .AID {
+  background-color: lightgreen;
+}
+
+.legend .PID {
+  background-color: pink;
+}
+
+.legend .POC {
+  background-color: red;
+}
+
+.legend .IID {
+  background-color: green;
+}
+
+.text.shadow {
+  background: red;
+  background-color: red;
+}

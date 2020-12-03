@@ -1,0 +1,86 @@
+@import "../../../../../assets/scss/mixins";
+@import "../../../../../assets/scss/variables";
+
+td,
+th {
+  word-break: break-word;
+  text-align: center;
+}
+td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.high-width-cols {
+  width: 180px;
+}
+.primeNg-table-container-missing-data {
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.missing-table-edit-modal {
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+  max-width: 600px;
+
+  .ui-dialog-content {
+    // width: 1000px !important;
+    // max-height: 50vh !important;
+  }
+
+  input.is-invalid {
+    border-color: #dc3545 !important;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #dee2e6 !important;
+  }
+
+  .edit-popup-footer {
+    display: flex;
+    justify-content: flex-end;
+
+    .footer-error-note {
+      color: red;
+      font-size: 12px;
+      margin-right: 15px;
+      align-self: center;
+    }
+  }
+}
+
+* html div#division {
+  height: expression("60vh"); /* sets max-height for IE */
+}
+
+button.edit-popup-save-btn {
+  @include button(60px, 30px, 3px 3px);
+
+  display: inline-block;
+  width: 60px !important;
+  border: none !important;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    @include disabled-button(60px, 30px, 3px 3px);
+
+    border: none !important;
+  }
+
+  .ui-button-text.ui-clickable {
+    display: none;
+  }
+}
+
+.home-drilldown-tables-no-data {
+  @extend .no-graph-msg;
+}

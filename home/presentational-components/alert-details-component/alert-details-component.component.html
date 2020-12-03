@@ -1,0 +1,68 @@
+<section class="alert-details-component">
+    <h4 class="alert-details-title">{{title}}</h4>
+  <section class= "alert-details-component-search">
+      <pfep-home-search-criteria [searchInputs]="searchInputs" (criteria)="onCriteriaChange($event)" (selectedSegment)="selectedSegment($event)"></pfep-home-search-criteria>
+  </section>
+  <section class="alert-details-export-excel">
+      <img src='assets/images/download_icon.png' pTooltip= "Download Excel" (click)='exportExcel()' [ngStyle]="{'pointerEvents': dataEdited ? 'none' : 'auto', 'filter': dataEdited ? 'grayscale(100%)' : 'none'}"/>
+      <section class="snoozeSwitch-ctr">
+          <label> View Snoozed Alerts: </label>
+        <p-inputSwitch styleClass='snooze-switch' (onChange)="handleSnooze($event)" [(ngModel)]="snoozeEnabled"></p-inputSwitch>
+      </section>
+  </section>
+  <section class= "alert-details-component-table" >
+    <p-table [value]="tableData" [columns]="tableColumns" [scrollable]="true" [scrollHeight]="tableHeight" styleClass='alert-detail-table' *ngIf="!dataFetching" [style]="{ width: '100%' }">
+        <ng-template pTemplate="colgroup" let-columns >
+            <colgroup>
+                <col *ngFor="let col of tableColumns" style="width:150px" />
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let col of tableColumns" (click)="sortTable(col.value, col.type)" [class]="col.className ? col.className : ''" [ngClass]="{'sortable': col.sortable === true ? true : false, 'table-header': true}">{{col.displayName}} 
+                <i *ngIf="col.sortable === true" class="ui-sortable-column-icon pi pi-fw" [ngClass]="(sortMode === 1) ?'pi-sort-up':(sortMode === -1 ? 'pi-sort-down':'pi-sort')"></i>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-record>
+            <tr>
+                <td *ngFor="let col of tableColumns" >
+                        <span *ngIf="col.type ? col.type !== 'checkBox' :  true"><a href='#' *ngIf="col.type === 'link'" (click)="navigateToScreen($event,col.value, record[col.value], record)">{{record[col.value]}}</a><p *ngIf="col.type !== 'link'" [pTooltip]="col.type === 'date' ? formatDate(record[col.value]) : record[col.value]">{{ col.type === 'date' ? formatDate(record[col.value]) : record[col.value]}}</p></span>
+                        <input type="checkbox" *ngIf="col.type && col.value=='SNOOZE_IND' ? col.type === 'checkBox' :  false" [checked]="record[col.value]" 
+                        (click)="checkBoxClicked($event, col.value, record)" [pTooltip]="(record.SNOOZE_IND)?formatDate(record.SNOOZE_UNTIL_DATE):'Select Snooze Until Date'"  tooltipPosition="left"/>
+                        <input type="checkbox" *ngIf="col.type && col.value!='SNOOZE_IND' ? col.type === 'checkBox' :  false" [checked]="record[col.value]" 
+                        (click)="checkBoxClicked($event, col.value, record)" />
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns *ngIf="tableData.length === 0">
+            <tr>
+                <td [attr.colspan]="tableColumns.length" class="home-drilldown-tables-no-data" [ngStyle]="{width: (tableColumns.length> 12) ? tableColumns.length*150 + 'px' : '1821px', 'justify-content': 'flex-start', 'padding-left': (tableColumns.length> 12) ? '900px' : '750px'}">
+                    No records to display
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </section>
+  <section class='alert-details-data-fetching'>
+        <section class='loading-text-section' *ngIf="dataFetching"  [ngStyle]="{'height': '500px'}">
+            <span> <img src="assets/images/Rolling-loader.gif"/> Fetching data...</span>    
+        </section>
+  </section>
+
+  <p-dialog header='Select Snooze Until Date' [closable]="true" [(visible)]="showSnoozeCalendar" [responsive]="true" showEffect="fade" [modal]="true"  [blockScroll]="true" (onHide)="calendarClosed()"
+   [positionTop]="200" [styleClass]="'snooze-dialog'" [style]="{height: 'auto', maxWidth: '600px', display: 'flex', flexDirection: 'column'}">
+    <section class="snooze-calendar" *ngIf="showSnoozeCalendar">
+      <p-calendar 
+     
+      (onSelect)="dateSelected($event)"
+      [inline]="true" 
+      [minDate]="minDate"  name="snoozeUntilDate"></p-calendar>
+    </section>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix snooze-btn-ctr">
+            <button type="button" pButton class='snooze-until-date-save' (click)="saveDate()"> Done </button>
+        </div>
+    </p-footer>
+</p-dialog>
+</section>

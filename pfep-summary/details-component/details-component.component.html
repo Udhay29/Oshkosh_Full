@@ -1,0 +1,140 @@
+<section class="pfep-summary-details-container">
+  <section class="pfep-summary-branch-description">
+    <section class="pfep-summary-description-container">
+      <p class="pfep-summary-description">Part Description :</p>
+      <section class="pfep-summary-desc">
+        <span>{{ details[itemDesc] || "No description available." }}</span>
+      </section>
+    </section>
+    <section class="pfep-summary-branch-dropDown">
+      <span class="pfep-summary-dd-heading"> Branch Plant :</span>
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        (onChange)="branchChanged($event)"
+        [options]="branchValues"
+        [placeholder]="'Select Branch'"
+        [(ngModel)]="selectedBranch"
+      ></p-dropdown>
+    </section>
+  </section>
+  <section class="pfep-summary-details" *ngIf="details[attributeValuesKey]">
+    <ng-container
+      *ngFor="let attribute of attributeDetails"
+      [ngSwitch]="attribute.type"
+    >
+      <section
+        class="pfep-summary-attribute-container pfep-summary-multi-valued-ctr"
+        *ngSwitchCase="'multi'"
+      >
+        <p class="pfep-summary-attribute-name">
+          {{ attribute.label + ":" }}
+        </p>
+        <section class="pfep-summary-attribute-value ">
+          <section
+            class="pfep-summary-multi-valued-values-ctr"
+            *ngFor="let value of multiValuedFields[attribute.key]"
+          >
+            <p
+              [ngClass]="{
+                'pfep-summary-attribute-name': true,
+                'multi-valued-attribute-name': true,
+                'value-not-avaialble':
+                  emptyDetailsAttributes.indexOf(value.key) > -1 &&
+                  (details[attributeValuesKey][value.key] === undefined ||
+                    details[attributeValuesKey][value.key] === null ||
+                    details[attributeValuesKey][value.key] === '')
+              }"
+            >
+              {{ value.label + " :" }}
+            </p>
+            <input *ngIf="editableFields.indexOf(value.key) > -1"
+              class="pfep-summary-attribute-value multi-valued-attribute-value"
+              [ngClass]="{
+                'value-not-avaialble':
+                  emptyDetailsAttributes.indexOf(value.key) > -1 &&
+                  (dimensionValues[value.key] === undefined ||
+                    dimensionValues[value.key] === null ||
+                    dimensionValues[value.key] === ''||
+                    dimensionValues[value.key] === '.')
+              }"
+              [disabled]="
+                !isEditable || editableFields.indexOf(value.key) === -1
+              "
+              [(ngModel)]="dimensionValues[value.key]"
+              [value]="details[attributeValuesKey][value.key] || ''"
+              [title]="details[attributeValuesKey][value.key] || ''"
+              (ngModelChange)="attributeValueChanged($event, value.key)"
+              numberOnly
+            />
+            <span *ngIf="editableFields.indexOf(value.key) === -1"
+              class="pfep-summary-attribute-value multi-valued-attribute-value"
+              [pTooltip]="details[attributeValuesKey][value.key] || ''"
+            >{{details[attributeValuesKey][value.key] || ''}}</span>
+          </section>
+        </section>
+      </section>
+
+      <section class="pfep-summary-attribute-container" *ngSwitchDefault>
+        <p
+          [ngClass]="{
+            'pfep-summary-attribute-name': true,
+            'value-not-avaialble':
+              emptyDetailsAttributes.indexOf(attribute.key) > -1 &&
+              (dimensionValues[attribute.key] === undefined ||
+                dimensionValues[attribute.key] === null ||
+                dimensionValues[attribute.key] === '.'||
+                dimensionValues[attribute.key] === '')
+          }"
+        >
+          {{ attribute.label + ":" }}
+        </p>
+        <ng-container [ngSwitch]="attribute.type">
+          <input
+            *ngSwitchCase="'number'"
+            [ngClass]="{
+              'pfep-summary-attribute-value': true,
+              'editable-branch-input':
+                editableFields.indexOf(attribute.key) === -1,
+                'value-not-avaialble':
+                  emptyDetailsAttributes.indexOf(attribute.key) > -1 &&
+                  (dimensionValues[attribute.key] === undefined ||
+                    dimensionValues[attribute.key] === null ||
+                    dimensionValues[attribute.key] === '.'||
+                    dimensionValues[attribute.key] === '')
+            }"
+            [disabled]="
+              !isEditable || editableFields.indexOf(attribute.key) === -1
+            "
+            [(ngModel)]="dimensionValues[attribute.key]"
+            [value]="details[attributeValuesKey][attribute.key] || ''"
+            [title]="details[attributeValuesKey][attribute.key] || ''"
+            (ngModelChange)="attributeValueChanged($event, attribute.key)"
+            numberOnly
+          />
+          <input
+            *ngSwitchCase = "'text'"
+            class="pfep-summary-attribute-value"
+            [disabled]="
+              !isEditable || editableFields.indexOf(attribute.key) === -1
+            "
+            [value]="details[attributeValuesKey][attribute.key] || ''"
+            [title]="details[attributeValuesKey][attribute.key] || ''"
+          />
+          <p
+            *ngSwitchDefault
+            class="pfep-summary-attribute-value"
+          >
+            <span [pTooltip]="details[attributeValuesKey][attribute.key] || ''">{{details[attributeValuesKey][attribute.key] || ''}}</span>
+          </p>
+          
+        </ng-container>
+      </section>
+    </ng-container>
+  </section>
+  <section
+    class="pfep-summary-details details-not-available"
+    *ngIf="!details[attributeValuesKey]"
+  >
+    Details not available.
+  </section>
+</section>

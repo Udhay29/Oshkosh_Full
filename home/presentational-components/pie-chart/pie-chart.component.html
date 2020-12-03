@@ -1,0 +1,19 @@
+<p class="heading">Parts by Packaging Type</p>
+<div class="card">
+    <div class="graphCard">
+
+    <ngx-charts-pie-chart *ngIf="data.length > 0"
+      [scheme]="colorScheme"
+      [results]="data"
+      [legendPosition]="'below'"
+      [legend]="showLegend"
+      [explodeSlices]="explodeSlices"
+      [labels]="showLabels"
+      [legendTitle]="''"
+      [doughnut]="doughnut"
+      [gradient]="gradient"
+    >
+    </ngx-charts-pie-chart>
+    <section *ngIf="data.length === 0" class="metric-pie-chart-no-data-message">{{noDataMsg}}</section>
+</div>
+</div>

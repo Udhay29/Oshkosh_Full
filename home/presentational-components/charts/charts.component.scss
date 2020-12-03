@@ -1,0 +1,16 @@
+@import "../../../../../assets/scss/variables";
+
+.heading {
+  @extend .font-bold;
+
+  color: #2f384a;
+  font-size: 14px;
+  margin: 0;
+}
+.card {
+  cursor: pointer !important;
+}
+
+.alerts-graph-no-data-section {
+  @extend .no-graph-msg;
+}

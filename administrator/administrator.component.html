@@ -1,0 +1,295 @@
+<section class='admin-ctr'>
+  <div class="pd-header">
+    <div class="page-title ">
+      <h3 class="pg-title">Administration</h3>
+    </div>
+  </div>
+  <form class="form-inline item-search" [formGroup]="ip_form" (ngSubmit)="searchSaveDefault(ip_form.value)">
+    <div class="row setdeftrow" width="100%">
+
+      <div class="form-group col-md-2" *ngIf="isAdmin">
+        <label for="oshID" class="">Oshkosh ID:<span class="required">*</span></label>
+        <input type="text" id="oshID" class="form-control" name="Oshkosh ID" formControlName="OSHKOSH_ID"
+          (blur)="checkUser()" />
+      </div>
+
+      <div class="form-group  col-md-2">
+        <label for="ORG_ID">Segment:<span class="required">*</span></label>
+        <select class="form-control" id="ORG_ID" name="" formControlName="ORG_ID" (change)="onChangeSegment($event)">
+          <option [ngValue]="null">Select</option>
+          <option *ngFor="let obj of userOrganizantionsList" [value]="obj.ORG_ID">{{
+                obj.ORG_ID
+              }}</option>
+        </select>
+      </div>
+      <div class="form-group  col-md-2">
+        <label for="Facility">Branch:<span class="required">*</span></label>
+        <select class="form-control" id="Facility" name="" formControlName="FACILITY_ID" (change)="setWorkcenter()">
+          <option [ngValue]="null">Select</option>
+          <option *ngFor="let obj of Facilities" [ngValue]="obj.FACILITY_ID">{{
+                  obj.FACILITY_ID
+                }}</option>
+        </select>
+      </div>
+      <div class="form-group  col-md-2 admin-look-up">
+        <label for="WorkCenter">Work Center:</label>
+        <!-- <input type="text" class="form-control" id="WorkCenter" name="WorkCenter" formControlName="WORK_CENTER_ID" /> -->
+        <pfep-wild-card-lookup [config]="workCenter" [defaultselecteddropDownValue]="defaultselecteddropDownValue"
+          (changeEvent)="wildCardChangeEvent($event)"></pfep-wild-card-lookup>
+      </div>
+      <div class="form-group  col-md-1 emailopt">
+        <label for="emailopt">Email Opt Out:</label>
+        <div class="checkBoxMargin">
+          <!-- <input type="checkbox" id="emailopt" formControlName="emailopt" name="WorkCenter" (change)="setEmailOpt($event)" /> -->
+          <p-inputSwitch formControlName="emailopt" inputId="emailopt" name="WorkCenter"
+            (onChange)="setEmailOpt($event)">
+          </p-inputSwitch>
+        </div>
+      </div>
+      <div class="form-group  col-md-1">
+        <label for="">&nbsp;</label>
+        <button class="btn btn-primary administration-save-default disabled-button" type="submit"
+          [disabled]="userDefaultErrorMsgFlag">
+          Save Default Values
+        </button>
+      </div>
+
+
+    </div>
+    <div *ngIf="userDefaultErrorMsgFlag" class="error">
+      {{userDefaultErrorMsg}}
+    </div>
+
+  </form>
+
+  <!-- with out dialogue-->
+
+  <p-accordion [multiple]="true" styleClass='admin-accordion'>
+    <p-accordionTab header="Add/Update User Details" [selected]="true" *ngIf="isAdmin" [selected]="true">
+      <section *ngIf="isAdmin">
+        <div>
+          <div class="col-md-12">
+            <h4 class="t-header">Add User</h4>
+          </div>
+          <div class="add-details row search-add-details col-md-12 ">
+            <form class="needs-validation col-md-12" #masteDataForm="ngForm" novalidate>
+              <div class="col-md-12 row">
+                <div class="form-group col-md-2">
+                  <label for="" class="textAlignRight col-form-label">Oshkosh ID<span class="required">*</span></label>
+                  <div class="">
+                    <input type="text" [(ngModel)]="col.OSHKOSH_USER_ID" (blur)="checkValidUser()" [required]="true"
+                      name="Oshkosh_Id" [maxLength]="10" #input1="ngModel"
+                      [ngClass]="{ 'is-invalid': (submitted && !input1.valid)||is-invalid }" class="form-control" />
+                  </div>
+                  <div *ngIf="invalidUserFlag" class="error">
+                    {{invalidUserMsg}}
+                  </div>
+                </div>
+
+                <div class="form-group col-md-2">
+                  <label for="" class="textAlignRight col-form-label">Segment<span class="required">*</span></label>
+                  <div class="">
+                    <p-multiSelect [maxSelectedLabels]="2" [style]="{ width: '100%' }" [options]="AllOrganizantionsList"
+                      filter="false" [required]="true" [(ngModel)]="col.ORG_ID" optionLabel="ORG_ID" [dataKey]="ORG_ID"
+                      defaultLabel="Select Segment" #input6="ngModel" name="input6"></p-multiSelect>
+                  </div>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="" class="textAlignRight col-form-label">Roles<span class="required">*</span></label>
+                  <div class="">
+                    <p-multiSelect [maxSelectedLabels]="2" [style]="{ width: '100%' }" [options]="multiRoles"
+                      filter="false" [required]="true" [(ngModel)]="col.APP_ROLES" optionLabel="APP_ROLE_NAME"
+                      defaultLabel="Select Role" #input5="ngModel" name="input5"></p-multiSelect>
+                  </div>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="" class="textAlignRight col-form-label">&nbsp;</label>
+                  <div class="">
+                    <button type="submit" class="btn btn-primary" (click)="addUser(masteDataForm);"
+                      [disabled]="masteDataForm.invalid || invalidUserFlag">
+                      ADD
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <form [formGroup]="user_form" (ngSubmit)="searchRoleDetails(user_form.value)">
+          <div class="col-md-12">
+            <h4 class="t-header">Update User Details</h4>
+          </div>
+
+
+          <div class="add-details row search-add-details">
+            <div class="form-group col-md-2">
+              <label for="" class="textAlignRight col-form-label">Oshkosh ID:</label>
+              <div class="">
+                <input type="text" class="form-control" id="" name="WorkCenter" formControlName="OSHKOSH_ID" />
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label for="ORG_ID">Segment:</label>
+              <select class="form-control" id="OrgId" name="OrgId" formControlName="OrgId">
+                <option [ngValue]="null">Select</option>
+                <option *ngFor="let obj of AllOrganizantionsList" [ngValue]="obj.ORG_ID"> {{obj.ORG_ID}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="" class=" textAlignRight ">User Roles:</label>
+              <div>
+                <select class="form-control" id="" name="" formControlName="USER_ROLE">
+                  <option [ngValue]="null">Select</option>
+                  <option *ngFor="let obj of Roles" [ngValue]="obj">{{ obj }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4  form-group add-user-btn">
+              <label for="" class=" textAlignRight ">&nbsp;</label>
+              <button class="btn btn-primary col-md-2 addUpdateButtons" type="submit">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <section *ngIf="showTable" class="primeNg-table-container-missing-data">
+          <p-table [value]="serachResults" [(selection)]="selctedRecord" [styleClass]="'disableCheckBox'">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3em">
+                  <p-tableHeaderCheckbox [disabled]="enableCheckAll"></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columnsUnderGroup">{{ col.displayName }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+              <tr>
+                <td style="width: 3em" [ngClass]="{'edited':rowData.modified}">
+                  <p-tableCheckbox [disabled]="rowData?.OSHKOSH_USER_ID ===currentUser.user_name" [value]="rowData"
+                    [index]="rowIndex"></p-tableCheckbox>
+                </td>
+                <td [ngClass]="{'edited':rowData.modified}"> {{ rowData?.OSHKOSH_USER_ID }} </td>
+                <td [ngClass]="{'edited':rowData.modified}"> {{ rowData?.USER_NAME }}</td>
+                <td [ngClass]="{'edited':rowData.modified}" pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <div *ngIf="rowData?.OSHKOSH_USER_ID !==currentUser.user_name">
+                        <p-multiSelect [maxSelectedLabels]="2" (onFocus)="editRow(rowIndex)"
+                          (onChange)="rowSegmentChanged(rowIndex)" [style]="{ width: '100%' }"
+                          [options]="AllOrganizantionsList" filter="false" [required]="true"
+                          [(ngModel)]="rowData.ORG_ID" [optionLabel]="'ORG_ID'" defaultLabel="Select Segment"
+                          #input6="ngModel" name="input_{{rowIndex}}" id="input_{{rowIndex}}"
+                          [ngModelOptions]="{standalone: true}">
+                        </p-multiSelect>
+                      </div>
+                      <div *ngIf="rowData?.OSHKOSH_USER_ID === currentUser.user_name">
+                        <div class="col-md-12 row">
+                          <div class="col-md-10">
+                            <div *ngFor="let col of rowData?.ORG_ID_LIST">
+                              {{ col }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      <div class="col-md-12 row">
+                        <div class="col-md-10">
+                          <div *ngFor="let col of rowData?.ORG_ID_LIST">
+                            {{ col }}
+                          </div>
+                        </div>
+                        <div class="col-md-2" *ngIf="rowData?.OSHKOSH_USER_ID !==currentUser.user_name"
+                          (click)="editRow(rowIndex)">
+                          <i>&#9998;</i>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td [ngClass]="{'edited':rowData.modified}" pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <div *ngIf="rowData?.OSHKOSH_USER_ID !==currentUser.user_name">
+                        <p-multiSelect [maxSelectedLabels]="2" (onFocus)="editRow(rowIndex)" [style]="{ width: '100%' }"
+                          [options]="multiRoles" filter="false" [required]="true" [(ngModel)]="rowData.APP_ROLES"
+                          [optionLabel]="'APP_ROLE_NAME'" defaultLabel="Select Role" #input5="ngModel"
+                          name="input_{{rowIndex}}" id="input_{{rowIndex}}" [ngModelOptions]="{standalone: true}">
+                        </p-multiSelect>
+                      </div>
+                      <div class="col-md-12 row" *ngIf="rowData?.OSHKOSH_USER_ID === currentUser.user_name">
+                        <div class="col-md-10">
+                          <div *ngFor="let col of rowData?.APP_ROLES">
+                            {{ col?.APP_ROLE_NAME }}
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      <div class="col-md-12 row">
+                        <div class="col-md-10">
+                          <div *ngFor="let col of rowData?.APP_ROLES">
+                            {{ col?.APP_ROLE_NAME }}
+                          </div>
+                        </div>
+                        <div class="col-md-2" *ngIf="rowData?.OSHKOSH_USER_ID !==currentUser.user_name"
+                          (click)="editRow(rowIndex)">
+                          <i>&#9998;</i>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td [ngClass]="{'edited':rowData.modified}">{{ rowData?.USER_EMAIL }}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-serachResults>
+              <tr>
+                <td [attr.colspan]="columnsUnderGroup.length+1" class="textAlignCenter">
+                  No records found
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </section>
+        <div class="col-md-12 textAlignRight" *ngIf="(showTable && (serachResults?.length > 0))">
+          <button class="btn btn-primary admin-buttons disabled-button" [disabled]="!(selctedRecord?.length > 0)"
+            type="button" (click)="confirmDelete()">
+            Delete User(s)
+          </button>
+
+          <button class="btn btn-primary admin-buttons" type="button" [disabled]="UpdatedUsers.length===0"
+            (click)="updateUsers()">
+            Save Changes
+          </button>
+        </div>
+        <p-confirmDialog [width]="600"></p-confirmDialog>
+        <p-dialog [header]="'Alert'" [(visible)]="invalidRoles" [responsive]="true" showEffect="fade" [modal]="true"
+          [width]="600">
+          <form class="needs-validation" name="errorAlert" #errorAlert="ngForm" novalidate>
+            <div class="ui-g ui-fluid" *ngIf="invalidRoles">
+              <b>{{'User Access Administration Role cannot be assigned with other roles to the user.'}}</b>
+              <div class="margin-center" *ngIf="!selfUpdate">
+                <b>{{'Please revisit the assigned roles.'}}</b>
+              </div>
+            </div>
+            <div align="center">
+              <button type="submit" class="btn btn-primary buttonMargin" (click)="invalidRoles=false">OK</button>
+            </div>
+          </form>
+        </p-dialog>
+      </section>
+    </p-accordionTab>
+    <p-accordionTab header="Configuration Alerts & Calculations" *ngIf="isBusinessAdmin" [selected]="true">
+      <section *ngIf="isBusinessAdmin" class="master-top">
+        <pfep-configuration [configTypes]="configTypes" (deleteRecord)="deleteConfig($event)"
+          (saveorUpdt)="saveorupdateAlertConfig($event)" [configDetails]="configDetails"
+          (isEdited)="isValueChanged($event)" (changedConfig)="configChanged($event)">
+        </pfep-configuration>
+      </section>
+    </p-accordionTab>
+  </p-accordion>
+
+</section>

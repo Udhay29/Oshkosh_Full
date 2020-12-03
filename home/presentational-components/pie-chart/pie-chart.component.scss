@@ -1,0 +1,8 @@
+@import '../../../../../assets/scss/variables';
+
+.metric-pie-chart-no-data-message {
+    @extend .no-graph-msg;
+}
+.graphCard{
+    height:250px;
+}

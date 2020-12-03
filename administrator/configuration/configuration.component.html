@@ -1,0 +1,122 @@
+<div class="col-md-12 no-margin no-padding">
+
+  <div class="col-md-12 row  no-margin no-padding add-details">
+    <div class="form-group col-md-2">
+      <label class="header-font">Configuration Type:</label>
+      <div>
+        <select class="form-control" id="config" name="config" #config="ngModel" [(ngModel)]="configType"
+          (change)="configChanged()"
+          [disabled]="isInValidPercent || configTableForm.invalid|| piecePercent || isMinorMax || isInvalid">
+          <option [ngValue]="null">Select</option>
+          <option *ngFor="let obj of configTypes" [ngValue]="obj">
+            {{ obj }}</option>
+        </select>
+      </div>
+    </div>
+    <form name="configTableForm" #configTableForm="ngForm" class="col-md-12">
+
+      <div class="form-group" *ngIf="configType && headings.length>0">
+
+        <div>
+          <p-table [value]="tableData" [(selection)]="selectedRecord" [scrollable]="true" scrollHeight="250px"
+            sortMode="multiple" [paginator]="true" [rows]="10" [totalRecords]="tableData.length"
+            [rowsPerPageOptions]="[10, 25, 50, 75, 100]" [first]="first" (onPage)="pageChange($event)">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3em" *ngIf="configType==='ABC_CODE_DETERMINATION'">
+                  <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                </th>
+                <th *ngFor="let col of headings" (click)="onSort(sortMode,col.key)" class="page-ui-sort">
+                  {{col.name}}
+                  <i class="ui-sortable-column-icon pi pi-fw"
+                    [ngClass]="(sortMode)?'pi-sort-up':(sortMode!==undefined?'pi-sort-down':'pi-sort')"></i>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-config let-rowIndex="rowIndex">
+              <tr>
+                <td style="width: 3em" *ngIf="configType==='ABC_CODE_DETERMINATION'">
+                  <p-tableCheckbox [value]="config" [index]="rowIndex" [disabled]="disableCheckBox(config)">
+                  </p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of headings" pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <span *ngIf="col.isEdit && col.type == 'integer'">
+                        <input *ngIf="isDisabled(col,config)" numberOnly="true" pInputText type="text"
+                          customMin="{{col.min}}" customMax="{{col.max}}" [maxLength]="col.maxLength" required
+                          id="{{col.key}}" name="{{col.key}}" [(ngModel)]="config[col.key]"
+                          (focus)="modelUpdated(rowIndex)" class="form-control"
+                          (ngModelChange)="calculateMax(config,col)" />
+                      </span>
+                      <span *ngIf="col.isEdit && col.type == 'number'">
+                        <input *ngIf="isDisabled(col,config)" numberOnly pInputText type="text" customMin="{{col.min}}"
+                          customMax="{{col.max}}" [maxLength]="col.maxLength" required id="{{col.key}}"
+                          name="{{col.key}}" [(ngModel)]="config[col.key]" (focus)="modelUpdated(rowIndex)"
+                          class="form-control" (ngModelChange)="calculateMax(config,col)" />
+                      </span>
+                      <select *ngIf="col.isEdit && col.type == 'dropdown'" class="form-control" id="{{col.key}}"
+                        name="{{col.key}}" [(ngModel)]="config[col.key]" (change)="clearFields(config)">
+                        <option *ngFor="let obj of col.options" [ngValue]="obj[col.key]">
+                          {{ obj[col.key] }}</option>
+                      </select>
+                      <p *ngIf="!col.isEdit">{{config[col.key]}}</p>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      <p>
+                        {{config[col.key]}}
+                        <i *ngIf="col.isEdit && config[col.key]">&#9998;</i>
+                      </p>
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="configType==='ABC_CODE_DETERMINATION'?(headings?.length+1):headings?.length"
+                  class="textAlignCenter">
+                  No records found
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <div class="col-md-12 row bottom-msg-ctr">
+            <div class="col-md-7">
+              <div class="required col-md-7" *ngIf="isInValidPercent">
+                Org Id & Facility Id combination Total Percentage should be less than 100.
+              </div>
+              <div class="required col-md-7" *ngIf="piecePercent">
+                Piece Price should not be greater than the Prevoius one
+              </div>
+              <div class="required col-md-7" *ngIf="isInvalid || (isMinorMax && !isInValidPercent)">
+                Enter Valid Data
+              </div>
+            </div>
+            <div class="col-md-5 btn-ctr">
+              <button type="button" class="add-btn-config" pTooltip="Add" (click)="add()"> Add </button>
+              <button class="btn btn-primary admin-buttons disabled-button buttonMargin"
+                *ngIf="configType==='ABC_CODE_DETERMINATION'" [disabled]="selectedRecord?.length===0"
+                (click)="deleteRow()" type="button">
+                Delete
+              </button>
+              <button class="btn btn-primary admin-buttons disabled-button buttonMargin"
+                [disabled]="isInValidPercent || configTableForm.invalid || checkEdit() || piecePercent || isMinorMax || isInvalid"
+                type="button" (click)="Save()">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+</div>
+
+<pfep-add-configuration [display]="display" [type]="configType" [configurationFields]="headings"
+  (addConfig)="SaveOrUpdateConfig($event)" (displayChange)="onDialogClose($event)" *ngIf="configType && display"
+  [resultArray]="tableData">
+</pfep-add-configuration>

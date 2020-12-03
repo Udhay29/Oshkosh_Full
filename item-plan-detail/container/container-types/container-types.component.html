@@ -1,0 +1,8 @@
+<section class="container-types">
+    <section class="standard-containers">
+        <pfep-standard-container (isEdited)="isValueChanged($event)" [containerData]="standardContainerData" [containerSelected]="containerSelected" [customContainerSelected]="customContainerSelected" [containerToSelect]="containerToSelect?.type === 'standard'? containerToSelect?.containerValue : ''" [fitmentSaveFields]="fitmentSaveFields" [isEditable]="isEditable"></pfep-standard-container>
+    </section>
+  <section class="bulk-containers">
+      <pfep-bulk-container (isEdited)="isValueChanged($event)" [containerData]="bulkContainerData" [containerSelected]="containerSelected" [showTableHeading]="shouldShowBulkCtrHeading"  [containerToSelect]="containerToSelect?.type === bulkSelectValue ? containerToSelect?.containerValue : ''" [fitmentSaveFields]="fitmentSaveFields" [isEditable]="isEditable"></pfep-bulk-container>
+  </section>
+</section>

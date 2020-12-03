@@ -1,0 +1,152 @@
+<div class="col-md-12 mfcr-detail-ctr">
+  <div class="row">
+    <div class="col-md-7 details-ctr">
+      <div class="col-md-6 data-ctr">
+        <h6 class="form-head">Item Plan Data</h6>
+        <section class='plan-data-ctr'>
+          <div class="row row-margin attr-ctr" *ngFor="let data of FormValues">
+            <label class="col-md-5 item-plan-label">{{data.label}}</label>
+            <a *ngIf="data.type == 'link'" class="col-md-7 planIdLink plan-data-value dataFont"
+              (click)="navigateToItemPlanDet()">{{getItemPlan.MFCRItemPlanData[data.field]}}</a>
+            <span *ngIf="data.type == 'text'" class="col-md-7 plan-data-value dataFont" tooltipPosition="left"
+              [pTooltip]="getItemPlan.MFCRItemPlanData[data.field]">{{getItemPlan.MFCRItemPlanData[data.field]}}</span>
+            <div *ngIf="data.type == 'multi'" class="col-md-6 multi-value-ctr">
+              <ng-container *ngFor="let multivalue of multiValueFields">
+
+                <label class="col-md-1 item-plan-label">{{multivalue.label}}</label>
+                <span class="col-md-2 multi_input plan-data-value dataFont"
+                  [pTooltip]="getItemPlan.MFCRItemPlanData[multivalue.field]">{{getItemPlan.MFCRItemPlanData[multivalue.field]}}</span>
+
+              </ng-container>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-md-6 changes-ctr">
+        <h6 class="form-head">Requested Changes</h6>
+        <section class="request-change-table">
+          <table>
+            <thead>
+              <th>Item Plan</th>
+              <th>Current</th>
+              <th>Proposed</th>
+            </thead>
+            <tr *ngFor="
+                  let itemplan of itemPlanValues;
+                  index as rowIdx;
+                  even as evenRow
+                " [ngClass]="{ 'colored-row': evenRow }">
+              <td>{{ itemplan.label }}</td>
+              <td>
+                <span *ngIf="itemplan.type == 'text'"
+                  [pTooltip]="getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field]" tooltipPosition="left"
+                  [ngClass]="{'empty-value': !getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field]}"
+                  class="inp-mar plan-data-value">{{getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field] || '-'}}</span>
+
+                <span class="inp-mar plan-data-value" *ngIf="itemplan.type === 'dropdown'" tooltipPosition="left"
+                  [ngClass]="{'empty-value': !getDDSelectValue(getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field], itemplan.ddKey)}"
+                  [pTooltip]="getDDSelectValue(getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field], itemplan.ddKey,false)">
+                  {{getDDSelectValue(getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field], itemplan.ddKey) || '-'}}
+                </span>
+
+              </td>
+              <td>
+                <span *ngIf="itemplan.type == 'text'"
+                  [ngClass]="{'value-changed': (getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field] !== getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field]), 'empty-value': !getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field]}"
+                  [pTooltip]="getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field]" tooltipPosition="left"
+                  class="plan-data-value">{{getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field] || '-'}}</span>
+
+                <span class="plan-data-value"
+                  [ngClass]="{'value-changed': (getDDSelectValue(getItemPlan.MFCRItemPlanData.CURRENT_DATA[itemplan.field], itemplan.ddKey) !== getDDSelectValue(getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field], itemplan.ddKey)), 'empty-value': !getDDSelectValue(getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field], itemplan.ddKey)}"
+                  *ngIf="itemplan.type === 'dropdown'" tooltipPosition="left"
+                  [pTooltip]="getDDSelectValue(getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field], itemplan.ddKey, true)">
+                  {{getDDSelectValue(getItemPlan.MFCRItemPlanData.PROPOSED_DATA[itemplan.field], itemplan.ddKey) || '-'}}
+                </span>
+              </td>
+
+            </tr>
+          </table>
+
+          <table class="erpTable">
+            <thead>
+              <th>ERP Values</th>
+              <th>Current</th>
+              <th>Proposed</th>
+            </thead>
+            <tr *ngFor="
+            let erp of erpFormValues;
+              ">
+              <td>{{ erp.label }}</td>
+              <td>
+                <span *ngIf="erp.type == 'text'" [pTooltip]="getItemPlan.MFCRItemPlanData.CURRENT_DATA[erp.field]"
+                  [ngClass]="{'empty-value': !getItemPlan.MFCRItemPlanData.CURRENT_DATA[erp.field]}"
+                  tooltipPosition="left"
+                  class="col-md-3 inp-mar plan-data-value">{{getItemPlan.MFCRItemPlanData.CURRENT_DATA[erp.field] || '-'}}</span>
+
+              </td>
+              <td>
+                <span *ngIf="erp.type == 'text'" [pTooltip]="getItemPlan.MFCRItemPlanData.PROPOSED_DATA[erp.field]"
+                  tooltipPosition="left" class="col-md-3 plan-data-value"
+                  [ngClass]="{'value-changed': (getItemPlan.MFCRItemPlanData.CURRENT_DATA[erp.field] !== getItemPlan.MFCRItemPlanData.PROPOSED_DATA[erp.field]), 
+                  'empty-value': !getItemPlan.MFCRItemPlanData.PROPOSED_DATA[erp.field] }">{{getItemPlan.MFCRItemPlanData.PROPOSED_DATA[erp.field] || '-'}}
+                </span>
+              </td>
+
+            </tr>
+          </table>
+
+        </section>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <h6 class="form-head">Review Approvals Required</h6>
+      <section class="apprvSec">
+        <div *ngFor="let sec of getItemPlan.REVIEW_APPROVALS; index as idx " class="grpName"
+          [ngClass]="{'highlightInp': sec.STATUS == 'InProgress'}">
+          <p> <i *ngIf="idx !== 0" class='pi pi-angle-double-right'></i>{{sec.APPROVAL_GROUP}}</p>
+        </div>
+      </section>
+      <div class="apprvTbl">
+        <p-table [columns]="ApproveTableColumns" [value]="getItemPlan.REVIEW_APPROVALS" [scrollable]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of ApproveTableColumns" class="page-ui-sort">
+                {{ col.title }} </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+            <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex"
+              [ngClass]="{'rowSelect': rowData.STATUS == 'InProgress'}">
+              <td *ngFor="let col of columns" class={{col.cellClass}} pEditableColumn
+                (click)="cellClikedToEdit($event, col, rowData)">
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" class="form-control" [(ngModel)]="rowData[col.field]"
+                      (focus)="editRow(rowIndex)" *ngIf="col.isEdit && rowData.STATUS == 'InProgress'">
+                    <p *ngIf="!col.isEdit" class="rowValue">{{ rowData[col.field] }}</p>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    <p class="rowValue">{{ (rowData && rowData[col.field]) ? rowData[col.field] : '' }}<i
+                        *ngIf="col.isEdit && rowData.STATUS == 'InProgress'" class="col-edit">&#9998;</i></p>
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="columns.length" align="center">No records found</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="apprvBtns">
+          <button class="btn btn-primary apprvBtn" (click)="ApproveRequest()" [disabled]="disableButtons">
+            Approve</button>
+          <button class="btn btn-primary rejectBtn" (click)="RejectRequest()" [disabled]="disableButtons">
+            Reject</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

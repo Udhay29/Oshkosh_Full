@@ -1,0 +1,55 @@
+<section class= 'pfep-summaru-pou-table'>
+  <div class="t-margin pou-table-heading-div">
+    <h4 class="t-header">POU Item Plans</h4>
+    <span class='download-icon'>
+        <img src='assets/images/download_icon.png' (click)='exportExcel()' pTooltip="Download Excel" [ngStyle]="{'pointerEvents': !exportEnabled ? 'none' : 'auto', 'filter': !exportEnabled ? 'grayscale(100%)' : 'none' , 'cursor' : exportEnabled ? 'pointer' : 'auto'}"/>
+    </span>
+  </div>
+  
+  <p-table
+    [columns]="feilds"
+    [value]="data"
+    [scrollable]="true"
+    scrollHeight="280px"
+    sortMode="multiple"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of feilds" [pSortableColumn]="col.field">
+          {{ col.title }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-rowData
+      let-columns="columns"
+      let-rowIndex="rowIndex"
+    >
+      <tr [ngClass]="{'no-item-plan-id': !rowData['ITEM_PLAN_ID']}" class='pou-table'>
+        <td *ngFor="let col of columns" class="{{ col.cellClass }}">
+          <p
+            *ngIf="col.field == 'ITEM_PLAN_ID'"
+            class="item-plan-nav"
+            (click)="navigateToItemPlan(rowData)"
+          >
+            {{ rowData[col.field] || 'Create Item Plan #'}}
+          </p>
+          <p *ngIf="col.field != 'ITEM_PLAN_ID'">
+            {{ rowData[col.field] }}
+          </p>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length" align="center">No records found</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <p class="num-records">Total {{ data?.length }} Record(s)</p>
+    </ng-template>
+  </p-table>
+  
+</section>

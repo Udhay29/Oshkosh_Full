@@ -1,0 +1,44 @@
+<section class="packaging-contaier-options">
+  <h4>Container Options</h4>
+  <section class="date-options-container">
+    <section class="packaging-containers">
+      <span class="label-span">Recommended Container : </span>
+      <span class="packaging-container-labels">{{ conatinersToDisplay }}</span>
+    </section>
+    <button class="cancel-request-btn" (click)="cancelRequestFn()"
+      *ngIf="isEditable && rcButtonsExist && !disableChangeHistory">
+      Cancel Change Request
+    </button>
+    <a href="#" class="change-history-btn" (click)="viewHistory($event, disableChangeHistory)"
+      *ngIf="isEditable && rcButtonsExist"
+      [pTooltip]="disableChangeHistory ? 'There is no Change Request for this Item Plan' : ''" tooltipPosition="left"
+      [ngClass]="{'disable-history': disableChangeHistory}">
+      Change History
+    </a>
+    <button class="request-change-btn" (click)="requestChangeFn()"
+      *ngIf="isEditable && rcButtonsExist && disableChangeHistory">
+      Request Change
+    </button>
+    <button class="packaging-execute-calc-btn" (click)="calculateContainerOptions()" [disabled]="disableExecuteBtn">
+      Execute Calculation
+    </button>
+  </section>
+  <pfep-container-types *ngIf="showContainerTypes" [containerData]="containerData"
+    [containerSelected]="containerSelected" [customContainerSelected]="customContainerSelected"
+    [containerToSelect]="containerToSelect" [fitmentSaveFields]="fitmentSaveFields" [isEditable]="isEditable"
+    (isValueUpdated)="valueUpdated($event)"></pfep-container-types>
+  <ng-container *ngIf="isEditable">
+    <hr />
+    <section class="packaging-save-btn">
+      <button (click)="navigateBackOptions.navigateBack()" *ngIf="navigateBackOptions.displayCancelBtn">
+        Cancel
+      </button>
+      <section class="btn-container" [pTooltip]="disableSave ? 'One or more mandatory fields are empty' : ''"
+        tooltipPosition="left">
+        <button (click)="saveFn(false)" [disabled]="!enableSave">
+          Save
+        </button>
+      </section>
+    </section>
+  </ng-container>
+</section>

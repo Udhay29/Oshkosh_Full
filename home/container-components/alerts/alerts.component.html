@@ -1,0 +1,21 @@
+<div class="col-md-12 row no-margin no-padding">
+  <div class="col-md-10 row">
+    <div class="col-md-3" *ngFor="let data of graphData">
+      <charts-alerts [data]="data" (selectedGraph)="selectedGraph($event)">
+      </charts-alerts>
+    </div>
+  </div>
+  <div class="col-md-2 no-padding" (click)="selectedGraph('Demand Gaps')">
+    <p class="heading">{{ "Demand Gaps" }}</p>
+    <div class="card demand-gaps-card">
+      <div class="card-body" *ngIf="demandGap > 0">
+        <h1 class="card-title textAlignCenter">{{demandGap}}</h1>
+        <h6 class="card-subtitle mb-2 text-muted textAlignCenter">
+          Demand Gaps
+        </h6>
+        <p class="card-text textAlignCenter">(Unclassified parts)</p>
+      </div>
+      <section *ngIf="demandGap === 0" class="demand-gap-no-data-message">{{noDataMsg}}</section>
+    </div>
+  </div>
+</div>

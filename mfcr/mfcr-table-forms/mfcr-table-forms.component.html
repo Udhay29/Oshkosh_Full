@@ -1,0 +1,66 @@
+<div class="col-md-12 mfcr-table-ctr">
+  <p-table [columns]="formTableKeysValues" [value]="mfcrDataList.SearchRecords" [scrollable]="true" scrollHeight="620px"
+    styleClass='table-export-pdf'>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of formTableKeysValues" class="page-ui-sort">
+          {{ col.title }}
+          <!-- <p-sortIcon [field]="col.field" ariaLabel="sortMode" [ariaLabelDesc]="sortMode" [ariaLabelAsc]="sortMode"></p-sortIcon> -->
+          <!-- <i class="ui-sortable-column-icon pi pi-fw"
+            [ngClass]="(sortMode)?'pi-sort-up':(sortMode!==undefined?'pi-sort-down':'pi-sort')"></i> -->
+
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+        <td *ngFor="let col of columns" class={{col.cellClass}}>
+          <p *ngIf="col.field =='MFCR_SID'" class="planIdLink" (click)="getItemPlanDetails(rowData)">
+            {{ (rowData && rowData[col.field]) ? rowData[col.field] : '' }}</p>
+          <span *ngIf="col.field !='MFCR_SID'">{{ (rowData && rowData[col.field]) ? rowData[col.field] : '' }}</span>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length" align="center">No records found</td>
+      </tr>
+    </ng-template>
+    <!-- <ng-template pTemplate="summary">
+      <p *ngIf="!pagination.required" class="num-records">
+        Total {{ mfcrDataList.SearchRecords.length }} Record(s)
+      </p>
+      <p *ngIf="pagination.required" class="num-records">
+        Total {{ data.TotalCount }} Record(s) of {{data.TotalPageCount}} Page(s)
+      </p>
+    </ng-template> -->
+  </p-table>
+  <p-paginator [rows]="10" [totalRecords]="mfcrDataList.TotalCount" pageLinkSize="5"
+    [rowsPerPageOptions]="[10, 25, 50, 75, 100]" (onPageChange)="pageChange($event)"></p-paginator>
+  <pfep-mfcr-plan-detail [getItemPlan]="ItemPlanDetails" [rowData]="sendItemPlanDet"
+    [itemPlanDetailFn]="itemPlanDetailFn" (triggerTblRowData)="getItemPlanDetails($event)" *ngIf="showForm">
+  </pfep-mfcr-plan-detail>
+
+  <section>
+    <table id='table-export-pdf' [ngStyle]="{'display': 'none'}">
+      <thead>
+        <tr>
+          <th *ngFor="let col of formTableKeysValues" class="page-ui-sort">
+            {{ col.title }}
+            <!-- <p-sortIcon [field]="col.field" ariaLabel="sortMode" [ariaLabelDesc]="sortMode" [ariaLabelAsc]="sortMode"></p-sortIcon> -->
+            <!-- <i class="ui-sortable-column-icon pi pi-fw"
+              [ngClass]="(sortMode)?'pi-sort-up':(sortMode!==undefined?'pi-sort-down':'pi-sort')"></i> -->
+
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rowData of mfcrDataList.SearchRecords">
+          <td *ngFor="let col of formTableKeysValues">
+            <span>{{ (rowData && rowData[col.field]) ? rowData[col.field] : '' }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
